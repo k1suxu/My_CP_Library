@@ -1,3 +1,4 @@
+//ref: https://tjkendev.github.io/procon-library/cpp/range_query/segment_tree_beats_2.html
 struct SegmentTree {
 //functions and values
     const ll inf = 1e18;
