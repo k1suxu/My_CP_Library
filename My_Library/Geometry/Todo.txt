@@ -1,0 +1,20 @@
+segment系のintersectの確認(crosspointの時とか)
+下の方の関数の意味の理解(convex_hullとか)
+
+convex_hull使えない
+crosspoint of circle and line が使えない
+area(const Polygon &p, const Circle &c)が使えない
+
+convex_cutのrightバージョン
+
+manhattan geometry の実装
+
+area(const Circle &c1, const Circle &c2)の実装
+
+
+
+
+
+
+
+
