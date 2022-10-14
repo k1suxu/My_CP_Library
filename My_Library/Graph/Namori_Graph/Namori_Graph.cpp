@@ -1,3 +1,4 @@
+//ref: https://ei1333.github.io/algorithm/namori.html
 template< typename G >
 struct Namori
 {
