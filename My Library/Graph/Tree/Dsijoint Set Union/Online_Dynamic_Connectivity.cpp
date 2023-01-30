@@ -1,3 +1,4 @@
+//ref: https://qiita.com/hotman78/items/78cd3aa50b05a57738d4
 template<typename T>
 class dynamic_connectivity{
     class euler_tour_tree{
@@ -91,7 +92,7 @@ class dynamic_connectivity{
             return t;
         }
         void push(np t){
-            //’x‰„•]‰¿—\’è
+            //â€™xâ€°â€žâ€¢]â€°Â¿â€”\â€™Ã¨
         }
         void rot(np t,bool b){
             np x=t->p,y=x->p;
