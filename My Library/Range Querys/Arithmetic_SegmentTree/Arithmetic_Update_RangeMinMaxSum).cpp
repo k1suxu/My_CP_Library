@@ -48,3 +48,4 @@ struct lazy_segtree_arithmetic : lazy_segtype {
 };
 
 //be careful the data types(int, long long)
+//

@@ -1,4 +1,15 @@
 template<typename T>
+struct Primitive_Edge {
+    int from, to;
+    T cap;
+    int from_id, to_id;
+
+    Primitive_Edge() = default;
+    Primitive_Edge(int from_, int to_, T cap_, int from_id_ = -1, int to_id_ = -1) :
+        from(from_), to(to_), cap(cap_), from_id(from_id_), to_id(to_id_) {}
+};
+
+template<typename T>
 struct Edge {
     int to;
     T cap;
@@ -10,11 +21,13 @@ struct Edge {
 
 template<typename T>
 struct Dinic {
+    using pe = Primitive_Edge<T>;
     const T e = numeric_limits<T>::max();
     const T zero = 0;
 
     int n;
-    vector<vector<Edge<T>>> g;
+    vector<pe> primitive_edges;
+    vector<vector<Edge<T>>> g, prev_graph;
     vector<int> level, iter;
 
     Dinic(int n) : n(n), g(n) {}
@@ -25,6 +38,8 @@ struct Dinic {
 
         g[from].push_back(f);
         g[to].push_back(t);
+
+        primitive_edges.push_back({from, to, cap, (int)g[from].size() - 1, (int)g[to].size() - 1});
     }
 
     bool bfs(int s, int t) {
@@ -68,7 +83,8 @@ struct Dinic {
         return zero;
     }
 
-    T flow(int s, int t) {
+    T flow(int s, int t, bool recover = false) {
+        prev_graph = g;
         T f = zero;
 
         while(bfs(s, t)) {
@@ -78,10 +94,30 @@ struct Dinic {
             while((d = dfs(s, t, e)) > zero) f += d;
         }
 
+        if(recover) g = prev_graph;
+
         return f;
     }
-};
 
-//bipartite matching 
-//TODO: make faster Dinic using dynamic tree structure and current edge structure
-//”R‚â‚·–„‚ß‚éref: https://qiita.com/ningenMe/items/69ed7ce43c9cd0a2de38
+    void recover() {
+        g = prev_graph;
+    }
+
+    //0-indexed;
+    void update_cap(int i, T new_cap) {
+        pe &e = primitive_edges[i];
+        e.cap = new_cap;
+        g[e.from][e.from_id] = {e.to, e.cap, e.to_id};
+        g[e.to][e.to_id] = {e.from, 0, e.from_id};
+    }
+    void add_cap(int i, T add_cap) {
+        primitive_edges[i].cap += add_cap;
+        update_cap(i, primitive_edges[i].cap);
+    }
+    pe get_ith_edge(int i) {
+        return primitive_edges[i];
+    }
+    vector<pe> get_all_edges() {
+        return primitive_edges;
+    }
+};

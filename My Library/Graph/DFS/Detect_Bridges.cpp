@@ -17,15 +17,12 @@ struct LowLink {
         //sort(bridges.begin(), bridges.end());
     }
 
-    // id:探索中の頂点
-    // k:dfsで何番目に探索するか
-    // parent:idの親
     int dfs(int id, int k, int parent) {
         used[id] = true;
         ord[id] = k++;
         low[id] = ord[id];
         bool is_aps = false;
-        int count = 0; // number of sons
+        int count = 0;
         for(auto &e : g[id]) {
             if(!used[e]) {
                 count++;
@@ -51,7 +48,7 @@ struct LowLink {
     vector<int> articulation_points; //articulation points;
     vector<pair<int, int>> bridges; // bridge
 
-    //low[u] -- uからの後退辺を高々1回まで用いて到達できる頂点wについてord[w]の最小値
+    //low[u] -- uからの後退辺を高�?1回まで用�?て到達できる頂点wにつ�?てord[w]の最小値
     LowLink(const vector<vector<int>> &g_) : g(g_) {
         int si = (int)g.size();
         used.assign(si, 0);
@@ -66,7 +63,7 @@ struct LowLink {
     }
 
     // id:探索中の頂点
-    // k:dfsで何番目に探索するか
+    // k:dfsで何番目に探索する�?
     // parent:idの親
     int dfs(int id, int k, int parent) {
         used[id] = true;
@@ -79,27 +76,27 @@ struct LowLink {
                 count++;
                 k = dfs(e, k, id);
                 low[id] = min(low[id], low[e]);
-                //rootでなくてarticulation_pointである。
+                //rootでなくてarticulation_pointである�?
                 /*In DFS tree(order)
-                v を根とする DFS tree の部分木において、
-                u の祖先への後退辺を持つ頂点が存在しない(関節点)
-                u を含むvの祖先への後退辺を持つ頂点が存在しない(橋)
-                //後退辺とはDFStreeにおいて使用されなかった辺のこと(DFSの戻りではないことに注意)
+                v を�?�とする DFS tree の部�?木において�?
+                u の祖�?�への後退辺を持つ頂点が存在しな�?(関節点)
+                u を含むvの祖�?�への後退辺を持つ頂点が存在しな�?(�?)
+                //後退辺とはDFStreeにおいて使用されなかった辺のこと(DFSの戻りではな�?ことに注�?)
                           1
                          / \
                         2   5
                        / \
                       3 - 4
                     関節点-> 1, 2
-                    各ノードの直接の祖先のうちordが最小の点のみが関節点
-                    3の場合->2
-                    4の場合->min(2, 3) -> 2
+                    �?ノ�?�ド�?�直接の祖�?��?��?ちordが最小�?�点のみが関節点
+                    3の場�?->2
+                    4の場�?->min(2, 3) -> 2
                 */  
                 if(parent != -1 && ord[id] <= low[e]) is_aps = true;
                 if(ord[id] < low[e]) bridges.emplace_back(min(id, e), max(id, e));
             } else if(e != parent) {
                 //id -> e が後退辺
-                //直接戻る辺は数えない
+                //直接戻る辺は数えな�?
                 low[id] = min(low[id], ord[e]);
             }
         }

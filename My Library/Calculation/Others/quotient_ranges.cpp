@@ -1,5 +1,4 @@
-//first -- 商
-//second.first -- その商になる左端, second.second -- その商になる右端
+//first: N/[l,r], second: [l,r](���)
 vector<pair<long long, pair<long long, long long>>> quotient_ranges(long long N){
 	vector<pair<long long, pair<long long, long long>>> ans;
 	for (long long i = 1; i * i <= N; i++){

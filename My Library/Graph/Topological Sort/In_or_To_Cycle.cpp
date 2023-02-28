@@ -1,4 +1,4 @@
-//–³ŒÀ‰ñˆÚ“®‚Å‚«‚¿‚á‚¤”ª‚ÌŒÂ”
+//–³ŒÀ‰ñˆÚ“®‚Å‚«‚¿‚á‚¤‚â‚Â‚ÌŒÂ”
 struct in_cycle {
     int n;
     vector<vector<int>> g;

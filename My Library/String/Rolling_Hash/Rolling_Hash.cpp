@@ -1,5 +1,3 @@
-using ull = unsigned long long
-
 struct Rolling_Hash {
     static const unsigned long long rh_mod = (1ull << 61ull) - 1;
     vector<unsigned long long> power;
@@ -40,7 +38,7 @@ struct Rolling_Hash {
         int sz = s.size();
         vector<unsigned long long> hashed(sz + 1);
         for(int i = 0; i < (int)sz; i++) {
-        hashed[i + 1] = add(mul(hashed[i], base), s[i]);
+            hashed[i + 1] = add(mul(hashed[i], base), s[i]);
         }
         return hashed;
     }
@@ -87,5 +85,22 @@ struct Rolling_Hash {
     }
     bool issame(const vector<unsigned long long> &a, int l1, const vector<unsigned long long> &b, int l2, int len) {
         return issame(a, l1, l1+len, b, l2, l2+len);
+    }
+
+    template<typename T>
+    int compare(const vector<T> &raw, const vector<unsigned long long> &hash, int l1, int r1, int l2, int r2) {
+        // repi(i, l1, r1) cout << raw[i]; cout << " ";
+        // repi(i, l2, r2) cout << raw[i]; cout << "\n";
+        int LCP = lcp(hash, l1, r1, hash, l2, r2);
+        if(LCP == min(r1 - l1, r2 - l2)) return 2;//same
+        //0: l1‚Ì•û‚ª‚Å‚©‚¢, 1: l2‚Ì•û‚ª‚Å‚©‚¢
+        return raw[l1+LCP] < raw[l2+LCP];
+    }
+
+    bool is_palindrome(const vector<unsigned long long> normal, const vector<unsigned long long> rev, int l, int r) {
+        const int hash_len = (int)normal.size();
+        assert((int)rev.size() == hash_len);
+        // cout << l << " " << r << " " << hash_len-r << " " << hash_len-l << endl;
+        return issame(normal, l, r, rev, hash_len-1-r, hash_len-1-l);
     }
 };
