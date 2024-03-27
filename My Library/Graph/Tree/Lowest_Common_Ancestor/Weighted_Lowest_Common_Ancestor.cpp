@@ -1,4 +1,4 @@
-//weight ‚Ìƒ^ƒCƒv
+//weight ã®ã‚¿ã‚¤ãƒ—
 template<typename T = int>
 class Weighted_LCA{
     private:
@@ -50,7 +50,7 @@ class Weighted_LCA{
 
         if(u==v) return u;
 
-        //ˆê’v‚·‚é“_‚Ì‚Ğ‚Æ‚Â‘O‚Ì‚Æ‚±‚ë‚ÉˆÚ“®B
+        //ä¸€è‡´ã™ã‚‹ç‚¹ã®ã²ã¨ã¤å‰ã®ã¨ã“ã‚ã«ç§»å‹•ã€‚
         for(int i = k; i >= 0; i--) {
             if(dp[i][u] != dp[i][v]) {
                 u = dp[i][u];
@@ -74,25 +74,25 @@ class Weighted_LCA{
         }
         return u;
     }
-    pair<int, int> get_weight_distance_to_LCA(const int u, const int v) {
-        int lca = get(u, v);
-        return make_pair(dist[u] - dist[lca], dist[v] - dist[lca]);
-    }
     pair<int, int> get_node_distance_to_LCA(const int u, const int v) {
         int lca = get(u, v);
         return make_pair(depth[u] - depth[lca], depth[v] - depth[lca]);
     }
-    //uvƒpƒXã‚Ìv_0, v_1, ... v_k‚ÉŠÖ‚µ‚Ä‚»‚Ìi”Ô–Ú‚ğ•Ô‚·(k<i‚Ì‚Æ‚«‚Í-1)
-    //0-indexed‚Åi‚ğw’è‚·‚é(0--Å‰)
+    pair<int, int> get_weight_distance_to_LCA(const int u, const int v) {
+        int lca = get(u, v);
+        return make_pair(dist[u] - dist[lca], dist[v] - dist[lca]);
+    }
+    //uvãƒ‘ã‚¹ä¸Šã®v_0, v_1, ... v_kã«é–¢ã—ã¦ãã®iç•ªç›®ã‚’è¿”ã™(k<iã®ã¨ãã¯-1)
+    //0-indexedã§iã‚’æŒ‡å®šã™ã‚‹(0--æœ€åˆ)
     int jump(int u, int v, int i) {
-        pair<int, int> p = get_distance_to_LCA(u, v);
+        pair<int, int> p = get_node_distance_to_LCA(u, v);
         if(p.first + p.second < i) return -1;
 
         if(i <= p.first) return get_kth_ancestor(u, i);
         return get_kth_ancestor(v, p.first + p.second -i);
     }
 
-    //u->lca, v->lcaƒpƒX‚ğ•Ô‚·
+    //u->lca, v->lcaãƒ‘ã‚¹ã‚’è¿”ã™
     pair<vector<int>, vector<int>> get_path_to_LCA(int u, int v) {
         int lca = get(u, v);
         vector<int> u_ret;
@@ -110,7 +110,7 @@ class Weighted_LCA{
         return make_pair(u_ret, v_ret);
     }
 
-    //u->vƒpƒX‚ğ•Ô‚·B
+    //u->vãƒ‘ã‚¹ã‚’è¿”ã™ã€‚
     vector<int> get_path(int u, int v) {
         vector<int> u_ret, v_ret;
         tie(u_ret, v_ret) = get_path_to_LCA(u, v);
@@ -120,6 +120,40 @@ class Weighted_LCA{
         vector<int> ret;
         for(auto e : u_ret) ret.push_back(e);
         for(auto e : v_ret) ret.push_back(e);
+        return ret;
+    }
+
+    //u->lca, v->lcaãƒ‘ã‚¹ã®ã‚³ã‚¹ãƒˆç´¯ç©å’Œã‚’è¿”ã™
+    pair<vector<int>, vector<int>> get_weight_path_to_LCA(int u, int v) {
+        int lca = get(u, v);
+        int base_u = dist[u], base_v = dist[v];
+        vector<int> u_ret, v_ret;
+        while(u != lca) {
+            u_ret.push_back(base_u - dist[u]);
+            u = dp[0][u];
+        }
+        u_ret.push_back(base_u - dist[lca]);
+        vector<int> v_ret;
+        while(v != lca) {
+            v_ret.push_back(v);
+            v = dp[0][v];
+        }
+        v_ret.push_back(lca);
+        return make_pair(u_ret, v_ret);
+    }
+
+    //u->vãƒ‘ã‚¹ã®ã‚³ã‚¹ãƒˆç´¯ç©å’Œã‚’è¿”ã™
+    vector<int> get_weight_path(int u, int v) {
+        int lca = get(u, v);
+        vector<int> u_ret, v_ret, trush;
+        tie(u_ret, trush) = get_weight_path_to_LCA(u, v);
+        tie(trush, v_ret) = get_path_to_LCA(u, v);
+        v_ret.pop_back();
+        reverse(v_ret.begin(), v_ret.end());
+
+        vector<int> ret;
+        for(auto e : u_ret) ret.push_back(e);
+        for(auto e : v_ret) ret.push_back(u_ret.back() + dist[e] - dist[lca]);
         return ret;
     }
 };
@@ -187,7 +221,7 @@ class Weighted_LCA{
 
         if(u==v) return u;
 
-        //ˆê’v‚·‚é“_‚Ì‚Ğ‚Æ‚Â‘O‚Ì‚Æ‚±‚ë‚ÉˆÚ“®B
+        //ä¸€è‡´ã™ã‚‹ç‚¹ã®ã²ã¨ã¤å‰ã®ã¨ã“ã‚ã«ç§»å‹•ã€‚
         for(int i = k; i >= 0; i--) {
             if(dp[i][u] != dp[i][v]) {
                 u = dp[i][u];
@@ -215,8 +249,8 @@ class Weighted_LCA{
         int lca = get(u, v);
         return make_pair(dist[u] - dist[lca], dist[v] - dist[lca]);
     }
-    //uvƒpƒXã‚Ìv_0, v_1, ... v_k‚ÉŠÖ‚µ‚Ä‚»‚Ìi”Ô–Ú‚ğ•Ô‚·(k<i‚Ì‚Æ‚«‚Í-1)
-    //0-indexed‚Åi‚ğw’è‚·‚é(0--Å‰)
+    //uvãƒ‘ã‚¹ä¸Šã®v_0, v_1, ... v_kã«é–¢ã—ã¦ãã®iç•ªç›®ã‚’è¿”ã™(k<iã®ã¨ãã¯-1)
+    //0-indexedã§iã‚’æŒ‡å®šã™ã‚‹(0--æœ€åˆ)
     int jump(int u, int v, int i) {
         pair<int, int> p = get_distance_to_LCA(u, v);
         if(p.first + p.second < i) return -1;
@@ -226,8 +260,9 @@ class Weighted_LCA{
     }
 };
 
-//extended functions
-    //u->lca, v->lcaƒpƒX‚ğ•Ô‚·
+    
+//ãã®ä»–é–¢æ•°
+    //u->lca, v->lcaãƒ‘ã‚¹ã‚’è¿”ã™
     pair<vector<int>, vector<int>> get_path_to_LCA(int u, int v) {
         int lca = get(u, v);
         vector<int> u_ret;
@@ -245,7 +280,7 @@ class Weighted_LCA{
         return make_pair(u_ret, v_ret);
     }
 
-    //u->vƒpƒX‚ğ•Ô‚·B(ƒRƒXƒg—İÏ˜a‚Í‰º)
+    //u->vãƒ‘ã‚¹ã‚’è¿”ã™ã€‚(ã‚³ã‚¹ãƒˆç´¯ç©å’Œã¯ä¸‹)
     vector<int> get_path(int u, int v) {
         vector<int> u_ret, v_ret;
         tie(u_ret, v_ret) = get_path_to_LCA(u, v);
@@ -258,7 +293,7 @@ class Weighted_LCA{
         return ret;
     }
 
-    //u->lca, v->lcaƒpƒX‚ÌƒRƒXƒg—İÏ˜a‚ğ•Ô‚·
+    //u->lca, v->lcaãƒ‘ã‚¹ã®ã‚³ã‚¹ãƒˆç´¯ç©å’Œã‚’è¿”ã™
     pair<vector<int>, vector<int>> get_weight_path_to_LCA(int u, int v) {
         int lca = get(u, v);
         int base_u = dist[u], base_v = dist[v];
@@ -277,7 +312,7 @@ class Weighted_LCA{
         return make_pair(u_ret, v_ret);
     }
 
-    //u->vƒpƒX‚ÌƒRƒXƒg—İÏ˜a‚ğ•Ô‚·
+    //u->vãƒ‘ã‚¹ã®ã‚³ã‚¹ãƒˆç´¯ç©å’Œã‚’è¿”ã™
     vector<int> get_weight_path(int u, int v) {
         int lca = get(u, v);
         vector<int> u_ret, v_ret, trush;

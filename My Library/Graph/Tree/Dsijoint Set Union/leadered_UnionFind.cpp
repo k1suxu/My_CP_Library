@@ -17,7 +17,7 @@ struct UnionFind {
         return r[x] = root(r[x]);
     }
 
-    //x‚ÌƒOƒ‹[ƒv‚Éy‚ÌƒOƒ‹[ƒv‚ğ‚­‚Á‚Â‚¯‚é
+    //xã®ã‚°ãƒ«ãƒ¼ãƒ—ã«yã®ã‚°ãƒ«ãƒ¼ãƒ—ã‚’ãã£ã¤ã‘ã‚‹
     //leader[y] := leader[x]
     bool unite(int x, int y) {
         x = root(x);
@@ -41,8 +41,9 @@ struct UnionFind {
     int leader(int x) {
         return lead[root(x)];
     }
-    //x‚ª“ü‚Á‚Ä‚¢‚éƒOƒ‹[ƒv‚Ìleader‚ğy‚É•Ï‚¦‚é(•Ï‚¦‚é•K—v‚ª‚È‚¢(“¯‚¶‚¾‚Á‚½‚çfalse))
+    //xãŒå…¥ã£ã¦ã„ã‚‹ã‚°ãƒ«ãƒ¼ãƒ—ã®leaderã‚’yã«å¤‰ãˆã‚‹(å¤‰ãˆã‚‹å¿…è¦ãŒãªã„(åŒã˜ã ã£ãŸã‚‰false))
     bool change_leader(int x, int y) {
+        assert(issame(x, y));
         if(lead[root(x)] == y) return false;
         lead[root(x)] = y;
         return true;

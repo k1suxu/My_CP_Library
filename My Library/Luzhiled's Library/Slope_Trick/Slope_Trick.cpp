@@ -106,7 +106,7 @@ public:
         shift(a, a);
     }
     
-    // L, R ‚ğ”j‰ó‚·‚é
+    // L, R ã‚’ç ´å£Šã™ã‚‹
     T get(const T &x, bool retain = false) {
         SlopeTrick<T> before;
         if(retain) {
@@ -148,15 +148,15 @@ public:
 
 //explanation
 /*
-query() : min(f(x))‚Æ‚»‚Ì‚Ìx‚ÌÅ¬’lÅ‘å’l‚ğ•Ô‚·
+query() : min(f(x))ã¨ãã®æ™‚ã®xã®æœ€å°å€¤æœ€å¤§å€¤ã‚’è¿”ã™
 add_all(a) : f(x) = f(x) + a
-add_a_minus_x(a) : f(x) = f(x) + max(a-x, 0) -> ‰EŒ¨‰º‚ª‚è‚©‚ç’¼ü
-add_x_minus_a(a) : f(x) = f(x) + max(x-a, 0) -> ’¼ü‚©‚ç‰EŒ¨ã‚ª‚è
+add_a_minus_x(a) : f(x) = f(x) + max(a-x, 0) -> å³è‚©ä¸‹ãŒã‚Šã‹ã‚‰ç›´ç·š
+add_x_minus_a(a) : f(x) = f(x) + max(x-a, 0) -> ç›´ç·šã‹ã‚‰å³è‚©ä¸ŠãŒã‚Š
 add_abs(a) : f(x) = f(x) + |x-a| = f(x) + max(a-x, 0) + max(x-a, 0)
 clear_right() : f(x) = 
 clear_left() : 
-shift(a, b) : f(x)=min_{x-b<=y<=x-a}f(y) (a<=b‚ª•K{)
+shift(a, b) : f(x)=min_{x-b<=y<=x-a}f(y) (a<=bãŒå¿…é ˆ)
 shift(a) : f(x) = f(x-a)
-get(x) : f(x)‚ğ•Ô‚·(f‚Í”j‰ó‚³‚ê‚é)
-merge(g(x)) : f(x) = f(x) + g(x) (g‚Í”j‰ó‚³‚ê‚é)
+get(x) : f(x)ã‚’è¿”ã™(fã¯ç ´å£Šã•ã‚Œã‚‹)
+merge(g(x)) : f(x) = f(x) + g(x) (gã¯ç ´å£Šã•ã‚Œã‚‹)
 */

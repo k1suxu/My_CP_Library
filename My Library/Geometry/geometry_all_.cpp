@@ -23,7 +23,7 @@ ostream &operator<<(ostream &os, Point &p) {
 }
 
 // rotate point p counterclockwise by theta rad
-Point rotate(Real theta, const Point &p) {
+Point rotate(Real theta, const Point p) {
     return Point(cos(theta) * p.real() - sin(theta) * p.imag(), sin(theta) * p.real() + cos(theta) * p.imag());
 }
 
@@ -107,7 +107,7 @@ Real dot(const Point &a, const Point &b) {
 }
 
 // http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_1_C
-// aを中�?にbをど�?回転したらc�?
+// aを中�?にbをど�?回転したらc�?
 int ccw(const Point &a, Point b, Point c) {
     b = b - a, c = c - a;
     if(cross(b, c) > EPS) return +1;  // "COUNTER_CLOCKWISE"
@@ -118,7 +118,7 @@ int ccw(const Point &a, Point b, Point c) {
 }
 
 // http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_2_A
-//平�?
+//平�?
 bool parallel(const Line &a, const Line &b) {
     return eq(cross(a.b - a.a, b.b - b.a), 0.0);
 }
@@ -130,13 +130,13 @@ bool orthogonal(const Line &a, const Line &b) {
 }
 
 // http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_1_A
-//正�?影
+//正�?影
 Point projection(const Line &l, const Point &p) {
     double t = dot(p - l.a, l.a - l.b) / norm(l.a - l.b);
     return l.a + (l.a - l.b) * t;
 }
 
-//直線p1-p2に向けてpから引いた垂線�?�足
+//直線p1-p2に向けてpから引いた垂線�?�足
 Point projection(const Point &p1, const Point &p2, const Point &p) {
     const Line l(p1, p2);
     return projection(l, p);
@@ -158,7 +158,7 @@ Point reflection(const Point &p1, const Point &p2, const Point &p) {
     return reflection(l, p);
 }
 
-//交わる?�?
+//交わる?�?
 bool intersect(const Line &l, const Point &p) {
     return abs(ccw(l.a, l.b, p)) != 1;
 }
@@ -203,8 +203,8 @@ int intersect(const Circle &c, const Segment &l) {
 
 // http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_7_A&lang=jp
 // 交点の数
-//4 -- 交点な�?, 3 -- 外接, 2 -- 交点2�?, 1 -- �?接, 0 -- 交点な�?
-//共通接線�?�数
+//4 -- 交点な�?, 3 -- 外接, 2 -- 交点2�?, 1 -- �?接, 0 -- 交点な�?
+//共通接線�?�数
 int intersect(Circle c1, Circle c2) {
     if(c1.r < c2.r) swap(c1, c2);
     Real d = abs(c1.p - c2.p);
@@ -245,7 +245,7 @@ Real distance(const Line &l, const Segment &s) {
     return min(distance(l, s.a), distance(l, s.b));
 }
 
-//交点の座�?
+//交点の座�?
 Point crosspoint(const Line &l, const Line &m) {
     Real A = cross(l.b - l.a, m.b - m.a);
     Real B = cross(l.b - l.a, l.b - m.a);
@@ -288,7 +288,7 @@ pair< Point, Point > crosspoint(const Circle &c1, const Circle &c2) {
 }
 
 // http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_7_F
-// tangent of circle c through point p接�?
+// tangent of circle c through point p接�?
 //接点
 pair< Point, Point > tangent(const Circle &c1, const Point &p2) {
     return crosspoint(c1, Circle(p2, sqrt(norm(c1.p - p2) - c1.r * c1.r)));
@@ -296,7 +296,7 @@ pair< Point, Point > tangent(const Circle &c1, const Point &p2) {
 
 // http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_7_G
 // common tangent of circles c1 and c2
-//二�??の共通接�?
+//二�??の共通接�?
 Lines tangent(Circle c1, Circle c2) {
     Lines ret;
     if(c1.r < c2.r) swap(c1, c2);
@@ -327,8 +327,6 @@ bool is_convex(const Polygon &p) {
 }
 
 // http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_4_A
-// �?まく使えないToDo
-//頂点のみ(辺上�?�点は含まれな�?)
 Polygon convex_hull(Polygon &p) {
     int n = (int) p.size(), k = 0;
     if(n <= 2) return p;
@@ -343,7 +341,7 @@ Polygon convex_hull(Polygon &p) {
     ch.resize(k - 1);
     return ch;
 }
-//辺上�?�点も含まれる
+//辺上の点も含まれる
 Polygon convex_hull_containing_points_on_edges(Polygon &p) {
     int n = (int)p.size();
     int k = 0;
@@ -430,15 +428,15 @@ vector< vector< int > > segment_arrangement(vector< Segment > &segs, vector< Poi
     vector< vector< int > > g;
     int N = (int) segs.size();
     for(int i = 0; i < N; i++) {
-        ps.emplace_back(segs[i].a);
-        ps.emplace_back(segs[i].b);
-        for(int j = i + 1; j < N; j++) {
-        const Point p1 = segs[i].b - segs[i].a;
-        const Point p2 = segs[j].b - segs[j].a;
-        if(cross(p1, p2) == 0) continue;
-        if(intersect(segs[i], segs[j])) {
-            ps.emplace_back(crosspoint(segs[i], segs[j]));
-        }
+            ps.emplace_back(segs[i].a);
+            ps.emplace_back(segs[i].b);
+            for(int j = i + 1; j < N; j++) {
+            const Point p1 = segs[i].b - segs[i].a;
+            const Point p2 = segs[j].b - segs[j].a;
+            if(cross(p1, p2) == 0) continue;
+            if(intersect(segs[i], segs[j])) {
+                ps.emplace_back(crosspoint(segs[i], segs[j]));
+            }
         }
     }
     sort(begin(ps), end(ps));
@@ -449,13 +447,13 @@ vector< vector< int > > segment_arrangement(vector< Segment > &segs, vector< Poi
     for(int i = 0; i < N; i++) {
         vector< int > vec;
         for(int j = 0; j < M; j++) {
-        if(intersect(segs[i], ps[j])) {
-            vec.emplace_back(j);
-        }
+            if(intersect(segs[i], ps[j])) {
+                vec.emplace_back(j);
+            }
         }
         for(int j = 1; j < vec.size(); j++) {
-        g[vec[j - 1]].push_back(vec[j]);
-        g[vec[j]].push_back(vec[j - 1]);
+            g[vec[j - 1]].push_back(vec[j]);
+            g[vec[j]].push_back(vec[j - 1]);
         }
     }
     return (g);
@@ -476,7 +474,7 @@ Polygon convex_cut(const Polygon &U, Line l) {
 }
 
 // http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_3_A
-//多角形の面�?
+//多角形の面積
 Real area(const Polygon &p) {
     Real A = 0;
     for(int i = 0; i < p.size(); ++i) {
@@ -486,7 +484,7 @@ Real area(const Polygon &p) {
 }
 
 // http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_7_H
-//多角形と�?の共通部�?の面�?
+//多角形と円の共通部分の面積
 Real area(const Polygon &p, const Circle &c) {
     if(p.size() < 3) return 0.0;
     function< Real(Circle, Point, Point) > cross_area = [&](const Circle &c, const Point &a, const Point &b) {
@@ -556,13 +554,13 @@ Real closest_pair(Points ps) {
         inplace_merge(begin(ps) + left, begin(ps) + mid, begin(ps) + right, compare_y);
         int ptr = 0;
         for(int i = left; i < right; i++) {
-        if(abs(real(ps[i]) - x) >= ret) continue;
-        for(int j = 0; j < ptr; j++) {
-            auto luz = ps[i] - beet[ptr - j - 1];
-            if(imag(luz) >= ret) break;
-            ret = min(ret, (ld)abs(luz));
-        }
-        beet[ptr++] = ps[i];
+            if(abs(real(ps[i]) - x) >= ret) continue;
+            for(int j = 0; j < ptr; j++) {
+                auto luz = ps[i] - beet[ptr - j - 1];
+                if(imag(luz) >= ret) break;
+                ret = min(ret, (ld)abs(luz));
+            }
+            beet[ptr++] = ps[i];
         }
         return ret;
     };
@@ -584,7 +582,7 @@ bool contain(const Circle &c1, const Circle &c2) {
     return false;
 }
 
-//三角形の�?接�?の中�?座�?
+//三角形の内接円
 //in circle
 Point triangles_inscribed_circles_center_point(const Polygon &p) {
     assert((int)p.size() == 3);
@@ -602,7 +600,7 @@ Circle triangles_inscribed_circle(const Polygon &p) {
     return Circle(triangles_inscribed_circles_center_point(p), triangles_inscribed_circles_radius(p));
 }
 
-//三角形の外接�?
+//三角形の外接円
 //out circle
 Point triangles_circumscribed_circles_center_point(const Polygon &p) {
     assert((int)p.size() == 3);
@@ -625,7 +623,7 @@ Circle triangles_circumscribed_circle(const Polygon &p) {
     return Circle(triangles_circumscribed_circles_center_point(p), triangles_circumscribed_circles_radius(p));
 }
 
-//反時計回りにソー�?(return)
+//反時計回りにソート(return)
 Points sort_counterclockwise(Points &p) {
     int n = (int)p.size();
     int hoge = 0;
@@ -638,7 +636,7 @@ Points sort_counterclockwise(Points &p) {
     }
     return ret;
 }
-//反時計回りにソー�?(write)
+//反時計回りにソー�?(write)
 void print_points_sorted_counterclockwise(Points &p) {
     int n = (int)p.size();
     int hoge = 0;
@@ -650,11 +648,10 @@ void print_points_sorted_counterclockwise(Points &p) {
     }
 }
 
+//有Hackコンテストなら以下のようにseed値を生成すること！！
 //seed = time(0)
 //seed = random_device()()
-//最小�??�?�?
-//hackありのコン�?ストでは上記二つを使用すること。特にrandom_device()()が強�?
-//sqrt(r) が半�?
+//sqrt(r) が半径
 template <class iter>
 Circle min_ball(iter left, iter right, int seed = 1333) {
     const int n = right - left;
@@ -711,30 +708,68 @@ Circle min_ball(iter left, iter right, int seed = 1333) {
     return c;
 }
 
+//distinct points
+
 //整数点のみO(N log N)
-bool points_eq_over_Z(Points a, Points b) {
-    sort(all(a));
-    sort(all(b));
-    return a==b;
-}
-//実数対応O(N^2)
-bool points_eq_over_R(Points a, Points b) {
-    if(a.size() != b.size()) return false;
+// bool points_eq_over_Z(Points a, Points b) {
+//     sort(all(a));
+//     sort(all(b));
+//     return a==b;
+// }
+// //実数対応O(N^2)
+// bool points_eq_over_R(Points a, Points b) {
+//     if(a.size() != b.size()) return false;
     
-    bool ans = true;
-    for(auto e : a) {
-        bool flag = false;
-        for(auto f : b) {
-            if(point_eq(e, f)) {
-                flag = true;
-                break;
-            }
-        }
-        ans = (ans && flag);
-    }
-    return ans;
-}
+//     bool ans = true;
+//     for(auto e : a) {
+//         bool flag = false;
+//         for(auto f : b) {
+//             if(point_eq(e, f)) {
+//                 flag = true;
+//                 break;
+//             }
+//         }
+//         ans = (ans && flag);
+//     }
+//     return ans;
+// }
 
 bool on_the_line(const Line& l, const Point& p) {
     return eq(distance(l, p), 0);
 }
+
+
+/*
+rotate(theta, p) : rotate point p counterclockwise by theta rad
+radian_to_degree
+degree_to_radian
+get_angle(a, b, c) : smaller angle of the a-b-c
+cross(a, b) : a = b?
+dot(a, b) : inner product
+[MAYbE] ccw(a, b, c) : a,b,cの反時計回りでの順序(原点中心)
+parallel(a, b) : a | b?
+[MAYBE] orthogonal(a, b) : a⊥b?
+projection(l(p1, p2), p) : p->lへの正射影(単位ベクトル)
+reflection(l(p1, p2), p) : lに関してp渡船対称な点
+intersect(いろいろ) : 交差判定
+distance(いろいろ) : 距離
+crosspoint(いろいろ) : 交点
+tangent(c1, p2) : 接点
+tangent(c1, c2) : common tangent of c1 and c2
+is_convex(p) : p is convex?
+convex_hull(p) : find convex hull of Polygon
+convex_hull_containing_points_on_edges(p) : smaller angle may be 180
+contains(Q, p) : p IN polygon Q or ON or OUT?
+convex_contains(Q, p) p IN convex Q or ON or OUT? O(log N)
+merge_segments(segs) : merge segs
+segment_arrangement
+convex_cut(u, l) : cut convex u with a straight line l (return left)
+area(p) : area of p
+area(p, c) : common area of p and c
+convex_diameter(p) : diameter of convex
+closest_pair(ps) : find closest pair among ps
+triangles_inscribled_circles_center_point(p) : 内接円の中心
+triangles_circumscribled_circles_center_point(p) : 外接円の中心
+sort_counterclockwise(p) : sort points COUNTERCLOCKWISE
+min_ball(.begin, .end) : 最小包含円
+*/

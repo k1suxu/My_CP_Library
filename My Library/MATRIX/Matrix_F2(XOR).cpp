@@ -34,7 +34,6 @@ struct Bit_Matrix {
     Bit_Matrix operator*(const Bit_Matrix other) const {return Bit_Matrix(*this) *= other;}
 };
 
-//rank(A)‚ğ•Ô‚µAA‚ğ‘|‚«o‚µŒã‚É•ÏŒ`‚·‚é
 int Gauss_Jordan(Bit_Matrix &A, bool is_extended = false) {
     int rank = 0;
 
@@ -61,10 +60,9 @@ int Gauss_Jordan(Bit_Matrix &A, bool is_extended = false) {
     return rank;
 }
 
-//rank(A+b)‚ğ•Ô‚µAres‚É•û’ö®‚Ì‰ğ‚ğ“ü‚ê‚é
 int linear_equatin(Bit_Matrix A, vector<int> b, vector<int>& res) {
     int m = A.H, n = A.W;
-    //Šg‘åŒW”s—ñ
+
     Bit_Matrix M(m, n+1);
     for(int i = 0; i < m; i++) {
         for(int j = 0; j < n; j++) M[i][j] = A[i][j];
@@ -72,10 +70,8 @@ int linear_equatin(Bit_Matrix A, vector<int> b, vector<int>& res) {
     }
     int rank = Gauss_Jordan(M, true);
 
-    //‰ğ‚È‚µ
     for(int row = rank; row < m; row++) if(M[row][n]) return -1;
     
-    //‰ğ‚ ‚è
     res.assign(n, 0);
     for(int i = 0; i < rank; i++) res[i] = M[i][n];
     return rank;

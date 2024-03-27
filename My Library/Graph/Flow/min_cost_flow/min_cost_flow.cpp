@@ -29,9 +29,11 @@ struct Primal_Dual {
     using npe = Primitive_Edge<flow_t, cost_t>;
     using ne = Edge<flow_t, cost_t>;
 
-    vector<npe> primitive_edges;
     vector<vector<ne>> graph, prev_graph;
+    vector<npe> primitive_edges;
     vector<cost_t> potential, min_cost;
+
+    vector<pair<int, int>> Edge_ID;
 
     vector<int> prev_v, prev_e;
     const flow_t f_zero;
@@ -41,27 +43,29 @@ struct Primal_Dual {
     Primal_Dual(int Vs, flow_t f_zero_ = 0, cost_t c_zero_ = 0) :
         graph(Vs), f_zero(f_zero_), c_zero(c_zero_), INF(numeric_limits<cost_t>::max()) {}
 
-    void add_edge(int from, int to, flow_t cap, cost_t cost) {
+    int add_edge(int from, int to, flow_t cap, cost_t cost) {
         ne from_e = {to, cap, cost, (int)graph[to].size(), false};
         ne to_e = {from, f_zero, -cost, (int)graph[from].size(), true};
+
+        int Now_Edge_ID = (int)Edge_ID.size();
+        Edge_ID.emplace_back(from, (int)g[from].size());
+
         graph[from].push_back(from_e);
         graph[to].push_back(to_e);
-        primitive_edges.push_back({from, to, cap, cost, (int)graph[from].size() - 1, (int)graph[to].size() - 1});
+
+        primitive_edges.emplace_back(from, to, cap, cost, (int)g[from].size() - 1, (int)g[to].size() - 1);
+
+        return Now_Edge_ID;
     }
-    void add_edge(npe edge) {
-        add_edge(edge.from, edge.to, edge.cap, edge.cost);
-    }
-    void add_edges(vector<npe> edges) {
-        for(npe edge : edges) {
-            add_edge(edge);
-        }
+    int add_edge(npe edge) {
+        return add_edge(edge.from, edge.to, edge.cap, edge.cost);
     }
 
     pair<flow_t, cost_t> min_cost_max_flow(int s, int t) {
         return min_cost_flow(s, t, std::numeric_limits<flow_t>::max());
     }
     //assert flows is sorted
-    vector<pair<flow_t, cost_t>> min_cost_flow_some_flow_value(int s, int t, vector<flow_t> flows) {
+    vector<pair<flow_t, cost_t>> min_cost_some_flow_values(int s, int t, vector<flow_t> flows) {
         if(flows.size() == 0) return {};
         vector<pair<flow_t, cost_t>> ret = min_cost_flow(s, t, flows.front());
         for(int i = 0; i < flows.size() - 1; i++) {
@@ -71,9 +75,9 @@ struct Primal_Dual {
         assert(ret.size() == flows.size());
         return ret;
     }
-    //s->t�֗���f�̍ŏ���p���𗬂��B�߂�l�͍ŏ���p�̒l
-    //s->t��f���z���Ȃ��ő�t���[�𗬂��Ƃ��̍ŏ���p��Ԃ�
-    //first: ����, second: �R�X�g
+    //s->tへ流量fの最小費用流を流す。戻り値は最小費用の値
+    //s->tへfを越えない最大フローを流すときの最小費用を返す
+    //first: 流量, second: コスト
     pair<flow_t, cost_t> min_cost_flow(int s, int t, flow_t f) {
         flow_t prim_f = f;
         prev_graph = graph;
@@ -141,7 +145,11 @@ struct Primal_Dual {
     vector<pair<flow_t, cost_t>> slope_to_max(int s, int t, flow_t f_min) {
         return slope(s, t, f_min, std::numeric_limits<flow_t>::max());
     }    
-    //s->t�ɗ��� f_min~min(�ő嗬��, f_max) �𗬂������̃R�X�g��Ԃ��B
+
+    //s->tに流量 f_min~min(最大流量, f_max) を流した時のコストを返す。
+    //折れ線の端点のみを返す(最初と最後含む)。
+    //ちょうど流量fの時のコストは、get_min_cost_by_slopeを使うこと！！
+    //
     vector<pair<flow_t, cost_t>> slope(int s, int t, flow_t f_min, flow_t f_max) {
         prev_graph = graph;
         pair<flow_t, cost_t> f_min_flow = min_cost_flow(s, t, f_min);
@@ -190,17 +198,21 @@ struct Primal_Dual {
             for(int v = 0; v < Vs; v++) potential[v] += min_cost[v];
             flow_t add_flow = remained_flow;
 
+            //差分更新だからgraph[prerv_v[v]][prev_e[v]]-before_braph[prev_v[v]][prev_e[v]]では??
             for(int v = t; v != s; v = prev_v[v]) {
                 add_flow = min(add_flow, graph[prev_v[v]][prev_e[v]].cap);
             }
 
             remained_flow -= add_flow;
 
+            //差分更新だからadd_flow * (potential[t]-before_potential[t])では？？
             ret += add_flow * potential[t];
+            slope_result.push_back(make_pair(slope_result.back().first+add_flow, ret));
 
-            for(int i = 0; i < add_flow; i++) {
-                slope_result.push_back(make_pair(slope_result.back().first + 1, slope_result.back().second + potential[t]));
-            }
+            //折れ線の端点以外も出力
+            // for(int i = 0; i < add_flow; i++) {
+            //     slope_result.push_back(make_pair(slope_result.back().first + 1, slope_result.back().second + potential[t]));
+            // }
 
             for(int v = t; v != s; v = prev_v[v]) {
                 ne &e = graph[prev_v[v]][prev_e[v]];
@@ -212,18 +224,25 @@ struct Primal_Dual {
         return slope_result;
     }
 
-    //�O���t���t���[�𗬂��O�ɖ߂�
+    //slopeの結果からi流した時の結果を復元する。
+    cost_t get_min_cost_by_slope(int f, const vector<pair<flow_t, cots_t>> &slope_result) {
+
+    }
+
+    //グラフをフローを流す前に戻す
     void recover() {
         graph = prev_graph;
     }
 
     //0-indexed
+    //assert recovered
     void update_cap(int i, flow_t new_cap) {
         npe &e = primitive_edges[i];
         e.cap = new_cap;
         graph[e.from][e.from_id] = {e.to, e.cap, e.cost, e.to_id, false};
         graph[e.to][e.to_id] = {e.from, f_zero, -e.cost, e.from_id, true};
     }
+    //don't have to assert recovered
     void update_cost(int i, cost_t new_cost) {
         npe &e = primitive_edges[i];
         e.cost = new_cost;
@@ -265,4 +284,5 @@ struct Primal_Dual {
         }
     }
 };
-//flow�̈�����recover?�̃u�[���l���������Ċ֐�����recover���������B
+//flowの引数にrecover?のブール値を持たせて関数内でrecoverさせたい。
+//add_edgeにintの返り値を持たせて、id = add_edge(), get_edge(id) = 元の辺　みたいにしたい。

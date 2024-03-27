@@ -149,7 +149,7 @@ Node* shift(int l, int r, Node* root){
     return insert(l, node, root);
 }
 
-//[l, r)‚ğlen‚¾‚¯¶zŠÂƒVƒtƒg‚³‚¹‚é
+//[l, r)ã‚’lenã ã‘å·¦å¾ªç’°ã‚·ãƒ•ãƒˆã•ã›ã‚‹
 // Node* circular_shift(int l, int r, int len, Node* root) {
 // split, split, merge, merge??
 // }
@@ -167,13 +167,13 @@ pair<Node*, int> range_fold(int l, int r, Node* root){
 }
 
 //undebugged
-//‘S‚Ä‚Ì—v‘f‚ª‰Šú‰»‚³‚ê‚Ä‚¢‚é‘O’ñ
+//å…¨ã¦ã®è¦ç´ ãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ã‚‹å‰æ
 Node* update_value(int i, int x, Node* root) {
     root = get(i, root);
     root->change_value(x);
     return root;
 }
-/*‰Šú‰»‚Í‚±‚ñ‚ÈŠ´‚¶
+/*åˆæœŸåŒ–ã¯ã“ã‚“ãªæ„Ÿã˜
 vector<Node> node(n);
 
 FOR(n-1) {
@@ -189,19 +189,19 @@ FOR(n) {
 SplayNode *root = &node[n-1];
 */
 
-//root = shift, merge, ‚İ‚½‚¢‚É‚·‚é‚æ‚¤‚É‹C‚ğ•t‚¯‚é‚±‚ÆII
+//root = shift, merge, ã¿ãŸã„ã«ã™ã‚‹ã‚ˆã†ã«æ°—ã‚’ä»˜ã‘ã‚‹ã“ã¨ï¼ï¼
 
 
 
 
 
 **************************************
-//•ª‚©‚ç‚È‚©‚Á‚½‚Æ‚«—p(g‚¤‚Ì‚Íã‚Ì‚â‚Â)
+//åˆ†ã‹ã‚‰ãªã‹ã£ãŸã¨ãç”¨(ä½¿ã†ã®ã¯ä¸Šã®ã‚„ã¤)
 **************************************
 struct SplayNode {
     SplayNode *left, *right, *parent;
     int size, value;
-    //”CˆÓ‚É’Ç‰Á
+    //ä»»æ„ã«è¿½åŠ 
 
     SplayNode() {
         left = nullptr;
@@ -236,23 +236,23 @@ struct SplayNode {
     }
 
     int state() {
-        if(!this->parent) return 0; //e–³‚µ
-        if(this->parent->left == this) return 1; //e‚Ì¶‘¤‚ª©•ª
-        if(this->parent->right == this) return -1; //e‚Ì‰E‘¤‚ª©•ª
+        if(!this->parent) return 0; //è¦ªç„¡ã—
+        if(this->parent->left == this) return 1; //è¦ªã®å·¦å´ãŒè‡ªåˆ†
+        if(this->parent->right == this) return -1; //è¦ªã®å³å´ãŒè‡ªåˆ†
         return 0;
     }
 
     void splay() {
-        //©•ª‚ªª‚É‚È‚é‚Ü‚Åã‚És‚­
+        //è‡ªåˆ†ãŒæ ¹ã«ãªã‚‹ã¾ã§ä¸Šã«è¡Œã
         while(this->state() != 0) {
             if(this->parent->state() == 0) {
                 this->rotate();
             }else if(this->state() == this->parent->state()) {
-                //“¯‚¶•ûŒü‚É˜A‚È‚Á‚Ä‚¢‚é‚Æ‚«(e¨©•ª)
+                //åŒã˜æ–¹å‘ã«é€£ãªã£ã¦ã„ã‚‹ã¨ã(è¦ªâ†’è‡ªåˆ†)
                 this->parent->rotate();
                 this->rotate();
             }else {
-                //•úZ‚ªˆá‚¤‚Æ‚«(©•ª¨©•ª)
+                //æ”¾æ ¡ãŒé•ã†ã¨ã(è‡ªåˆ†â†’è‡ªåˆ†)
                 this->rotate();
                 this->rotate();
             }
@@ -260,7 +260,7 @@ struct SplayNode {
     }
 
     void update() {
-        //ƒƒ“ƒo•Ï”‚É‚¢‚ë‚¢‚ë‚½‚¹‚Ä‚é‚Æ‚«‚Í‚±‚±‚ÅXV
+        //ãƒ¡ãƒ³ãƒå¤‰æ•°ã«ã„ã‚ã„ã‚æŒãŸã›ã¦ã‚‹ã¨ãã¯ã“ã“ã§æ›´æ–°
         this->size = 1;
         if(this->left) {
             this->size += this->left->size;
@@ -271,7 +271,7 @@ struct SplayNode {
     }
 
     // void update() {
-    //     //ƒƒ“ƒo•Ï”‚É‚¢‚ë‚¢‚ë‚½‚¹‚Ä‚é‚Æ‚«‚Í‚±‚±‚ÅXV
+    //     //ãƒ¡ãƒ³ãƒå¤‰æ•°ã«ã„ã‚ã„ã‚æŒãŸã›ã¦ã‚‹ã¨ãã¯ã“ã“ã§æ›´æ–°
     //     this->size = 1;
     //     if(this->left) node_merge(this->left);
     //     if(this->right) node_merge(this->right);
@@ -279,14 +279,14 @@ struct SplayNode {
 
     // void node_merge(SplayNode *v) {
     //     this->size += v->size;
-    //     //”CˆÓ‚É’Ç‰Á
+    //     //ä»»æ„ã«è¿½åŠ 
     // }
 };
 
 typedef SplayNode Node;
 
 //0-indexed
-//I‚í‚Á‚½Œãi‚ªª‚É—ˆ‚é
+//çµ‚ã‚ã£ãŸå¾ŒiãŒæ ¹ã«æ¥ã‚‹
 Node *get(int i, Node *root) {
     Node *now = root;
     while(true) {
@@ -306,7 +306,7 @@ Node *get(int i, Node *root) {
     }
 }
 
-//mergeŒã‚Ìª‚ğ•Ô‚·
+//mergeå¾Œã®æ ¹ã‚’è¿”ã™
 Node *merge(Node *lroot, Node *rroot) {
     if(!lroot) return rroot;
     if(!rroot) return lroot;
@@ -317,8 +317,8 @@ Node *merge(Node *lroot, Node *rroot) {
     return lroot;
 }
 
-//splitŒã‚Ì¶‚Ì–Ø‚ÌƒTƒCƒY‚ªleft_size‚É‚È‚é‚æ‚¤‚Ésplit
-//–ß‚è’l‚Í¶–Ø‚Ìª‚Æ‰E–Ø‚Ìª
+//splitå¾Œã®å·¦ã®æœ¨ã®ã‚µã‚¤ã‚ºãŒleft_sizeã«ãªã‚‹ã‚ˆã†ã«split
+//æˆ»ã‚Šå€¤ã¯å·¦æœ¨ã®æ ¹ã¨å³æœ¨ã®æ ¹
 pair<Node*, Node*> split(int left_size, Node *root) {
     if(left_size == 0) return make_pair(nullptr, root);
     if(left_size == root->size) return {root, nullptr};
@@ -333,7 +333,7 @@ pair<Node*, Node*> split(int left_size, Node *root) {
     return make_pair(lroot, rroot);
 }
 
-//0-indexed‚Åi”Ô–Ú‚ÌŒ„ŠÔ‚É“ü‚ê‚é
+//0-indexedã§iç•ªç›®ã®éš™é–“ã«å…¥ã‚Œã‚‹
 Node* insert(int i, Node *node, Node *root) {
     pair<Node*, Node*> trees = split(i, root);
     Node *lroot = trees.first;
@@ -341,8 +341,8 @@ Node* insert(int i, Node *node, Node *root) {
     return merge(merge(lroot, node), rroot);
 }
 
-//i”Ô–Ú‚Ì—v‘f‚ğíœ‚·‚é
-//–ß‚è’l‚ÍíœŒã‚Ì–Ø‚Ìª + íœ‚³‚ê‚½—v‘f‚Ìs‚«æ(–Ø‚Ìª)
+//iç•ªç›®ã®è¦ç´ ã‚’å‰Šé™¤ã™ã‚‹
+//æˆ»ã‚Šå€¤ã¯å‰Šé™¤å¾Œã®æœ¨ã®æ ¹ + å‰Šé™¤ã•ã‚ŒãŸè¦ç´ ã®è¡Œãå…ˆ(æœ¨ã®æ ¹)
 pair<Node*, Node*> remove(int i, Node *root) {
     root = get(i, root);
     Node *lroot = root->left;
@@ -353,7 +353,7 @@ pair<Node*, Node*> remove(int i, Node *root) {
     return make_pair(merge(lroot, rroot), root);
 }
 
-//0-indexed[l, r](•Â‹æŠÔ)‚ªleft_circular_shift‚³‚ê‚é
+//0-indexed[l, r](é–‰åŒºé–“)ãŒleft_circular_shiftã•ã‚Œã‚‹
 Node* shift(int l, int r, Node* root) {
     pair<Node*, Node*> tmp = remove(r, root);
     root = tmp.first;
@@ -361,9 +361,9 @@ Node* shift(int l, int r, Node* root) {
     return insert(l, node, root);
 }
 
-//rmq‚Ì‚¨è–{‚Ğ‚ÈŒ`
-//0-indexed[l,r)(”¼ŠJ‹æŠÔ)‚ÌƒNƒGƒŠ‚Ì“š‚¦‚ğ•Ô‚·
-//‘€ìI—¹‚Ìª‚Æ“š‚¦‚ğ•Ô‚·
+//rmqã®ãŠæ‰‹æœ¬ã²ãªå½¢
+//0-indexed[l,r)(åŠé–‹åŒºé–“)ã®ã‚¯ã‚¨ãƒªã®ç­”ãˆã‚’è¿”ã™
+//æ“ä½œçµ‚äº†æ™‚ã®æ ¹ã¨ç­”ãˆã‚’è¿”ã™
 pair<Node*, int> rmq(int l, int r, Node *root) {
     Node *lroot, *croot, *rroot;
     pair<Node*, Node*> tmp = split(r, root);

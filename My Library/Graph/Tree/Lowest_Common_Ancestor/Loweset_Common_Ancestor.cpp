@@ -47,7 +47,7 @@ class LCA{
 
         if(u==v) return u;
 
-        //ˆê’v‚·‚é“_‚Ì‚Ğ‚Æ‚Â‘O‚Ì‚Æ‚±‚ë‚ÉˆÚ“®B
+        //ä¸€è‡´ã™ã‚‹ç‚¹ã®ã²ã¨ã¤å‰ã®ã¨ã“ã‚ã«ç§»å‹•ã€‚
         for(int i = k; i >= 0; i--) {
             if(dp[i][u] != dp[i][v]) {
                 u = dp[i][u];
@@ -74,8 +74,8 @@ class LCA{
         return make_pair(depth[u] - depth[lca], depth[v] - depth[lca]);
     }
 
-    //uvƒpƒXã‚Ìv_0, v_1, ... v_k‚ÉŠÖ‚µ‚Ä‚»‚Ìi”Ô–Ú‚ğ•Ô‚·(k<i‚Ì‚Æ‚«‚Í-1)
-    //0-indexed‚Åi‚ğw’è‚·‚é(0--Å‰)
+    //uvãƒ‘ã‚¹ä¸Šã®u=v_0, v_1, ... v_k=vã«é–¢ã—ã¦ãã®iç•ªç›®ã‚’è¿”ã™(k<iã®ã¨ãã¯-1)
+    //0-indexedã§iã‚’æŒ‡å®šã™ã‚‹(0--æœ€åˆ)
     int jump(int u, int v, int i) {
         pair<int, int> p = get_distance_to_LCA(u, v);
         if(p.first + p.second < i) return -1;
@@ -84,7 +84,7 @@ class LCA{
         return get_kth_ancestor(v, p.first + p.second -i);
     }
 
-    //u->lca, v->lcaƒpƒX‚ğ•Ô‚·
+    //u->lca, v->lcaãƒ‘ã‚¹ã‚’è¿”ã™
     pair<vector<int>, vector<int>> get_path_to_LCA(int u, int v) {
         int lca = get(u, v);
         vector<int> u_ret;
@@ -102,7 +102,7 @@ class LCA{
         return make_pair(u_ret, v_ret);
     }
 
-    //u->vƒpƒX‚ğ•Ô‚·B
+    //u->vãƒ‘ã‚¹ã‚’è¿”ã™ã€‚
     vector<int> get_path(int u, int v) {
         vector<int> u_ret, v_ret;
         tie(u_ret, v_ret) = get_path_to_LCA(u, v);
@@ -115,6 +115,7 @@ class LCA{
         return ret;
     }
 };
+
 //add_edge version
 template<typename T = int>
 class LCA{
@@ -173,7 +174,7 @@ class LCA{
 
         if(u==v) return u;
 
-        //ˆê’v‚·‚é“_‚Ì‚Ğ‚Æ‚Â‘O‚Ì‚Æ‚±‚ë‚ÉˆÚ“®B
+        //ä¸€è‡´ã™ã‚‹ç‚¹ã®ã²ã¨ã¤å‰ã®ã¨ã“ã‚ã«ç§»å‹•ã€‚
         for(int i = k; i >= 0; i--) {
             if(dp[i][u] != dp[i][v]) {
                 u = dp[i][u];
@@ -200,14 +201,50 @@ class LCA{
         return make_pair(depth[u] - depth[lca], depth[v] - depth[lca]);
     }
 
-    //uvƒpƒXã‚Ìv_0, v_1, ... v_k‚ÉŠÖ‚µ‚Ä‚»‚Ìi”Ô–Ú‚ğ•Ô‚·(k<i‚Ì‚Æ‚«‚Í-1)
-    //0-indexed‚Åi‚ğw’è‚·‚é(0--Å‰)
+    //uvãƒ‘ã‚¹ä¸Šã®v_0, v_1, ... v_kã«é–¢ã—ã¦ãã®iç•ªç›®ã‚’è¿”ã™(k<iã®ã¨ãã¯-1)
+    //0-indexedã§iã‚’æŒ‡å®šã™ã‚‹(0--æœ€åˆ)
     int jump(int u, int v, int i) {
         pair<int, int> p = get_distance_to_LCA(u, v);
         if(p.first + p.second < i) return -1;
 
         if(i <= p.first) return get_kth_ancestor(u, i);
         return get_kth_ancestor(v, p.first + p.second -i);
+    }
+
+    //u->lca, v->lcaãƒ‘ã‚¹ã‚’è¿”ã™
+    pair<vector<int>, vector<int>> get_path_to_LCA(int u, int v) {
+        int lca = get(u, v);
+        vector<int> u_ret;
+        while(u != lca) {
+            u_ret.push_back(u);
+            u = dp[0][u];
+        }
+        u_ret.push_back(lca);
+        vector<int> v_ret;
+        while(v != lca) {
+            v_ret.push_back(v);
+            v = dp[0][v];
+        }
+        v_ret.push_back(lca);
+        return make_pair(u_ret, v_ret);
+    }
+
+    //u->vãƒ‘ã‚¹ã‚’è¿”ã™ã€‚
+    vector<int> get_path(int u, int v) {
+        vector<int> u_ret, v_ret;
+        tie(u_ret, v_ret) = get_path_to_LCA(u, v);
+        v_ret.pop_back();
+        reverse(v_ret.begin(), v_ret.end());
+
+        vector<int> ret;
+        for(auto e : u_ret) ret.push_back(e);
+        for(auto e : v_ret) ret.push_back(e);
+        return ret;
+    }
+
+    //xã‚’æ ¹ã¨ã—ãŸã¨ãã®LCA(y, z) (x,y,z)ã®é †åºã‚’å…¥ã‚Œæ›¿ãˆã¦ã‚‚ç­”ãˆã¯ä¸€ç·’(3ç‚¹ã®ä¸­å¤®é ‚ç‚¹ãŒè¿”ã£ã¦ãã‚‹)
+    int median(int x, int y, int z) {
+        return get(x, y)^get(y,z)^get(z,x);
     }
 };
 

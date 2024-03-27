@@ -135,55 +135,55 @@ template <class S, S (*op)(S, S), S (*e)()> struct segtree {
 
 template<class S, S (*op)(S, S), S (*e)()>
 struct HeavyLightDecomposition {
- private:
-  void dfs_sz(int cur) {
-    size[cur] = 1;
-    for (auto& dst : g[cur]) {
-      if (dst == par[cur]) {
-        if (g[cur].size() >= 2 && dst == g[cur][0])
-          swap(g[cur][0], g[cur][1]);
-        else
-          continue;
-      }
-      depth[dst] = depth[cur] + 1;
-      par[dst] = cur;
-      dfs_sz(dst);
-      size[cur] += size[dst];
-      if (size[dst] > size[g[cur][0]]) {
-        swap(dst, g[cur][0]);
-      }
+    private:
+    void dfs_sz(int cur) {
+        size[cur] = 1;
+        for (auto& dst : g[cur]) {
+            if (dst == par[cur]) {
+                if (g[cur].size() >= 2 && dst == g[cur][0])
+                    swap(g[cur][0], g[cur][1]);
+                else
+                    continue;
+            }
+            depth[dst] = depth[cur] + 1;
+            par[dst] = cur;
+            dfs_sz(dst);
+            size[cur] += size[dst];
+            if (size[dst] > size[g[cur][0]]) {
+                swap(dst, g[cur][0]);
+            }
+        }
     }
-  }
 
-  void dfs_hld(int cur) {
-    down[cur] = id++;
-    for (auto dst : g[cur]) {
-      if (dst == par[cur]) continue;
-      nxt[dst] = (dst == g[cur][0] ? nxt[cur] : dst);
-      dfs_hld(dst);
+    void dfs_hld(int cur) {
+        down[cur] = id++;
+        for (auto dst : g[cur]) {
+            if (dst == par[cur]) continue;
+            nxt[dst] = (dst == g[cur][0] ? nxt[cur] : dst);
+            dfs_hld(dst);
+        }
+        up[cur] = id;
     }
-    up[cur] = id;
-  }
 
-  // [u, v)
-  vector<pair<int, int>> ascend(int u, int v) const {
-    vector<pair<int, int>> res;
-    while (nxt[u] != nxt[v]) {
-      res.emplace_back(down[u], down[nxt[u]]);
-      u = par[nxt[u]];
+    // [u, v)
+    vector<pair<int, int>> ascend(int u, int v) const {
+        vector<pair<int, int>> res;
+        while (nxt[u] != nxt[v]) {
+            res.emplace_back(down[u], down[nxt[u]]);
+            u = par[nxt[u]];
+        }
+        if (u != v) res.emplace_back(down[u], down[v] + 1);
+        return res;
     }
-    if (u != v) res.emplace_back(down[u], down[v] + 1);
-    return res;
-  }
 
-  // (u, v]
-  vector<pair<int, int>> descend(int u, int v) const {
-    if (u == v) return {};
-    if (nxt[u] == nxt[v]) return {{down[u] + 1, down[v]}};
-    auto res = descend(u, par[nxt[v]]);
-    res.emplace_back(down[nxt[v]], down[v]);
-    return res;
-  }
+    // (u, v]
+    vector<pair<int, int>> descend(int u, int v) const {
+        if (u == v) return {};
+        if (nxt[u] == nxt[v]) return {{down[u] + 1, down[v]}};
+        auto res = descend(u, par[nxt[v]]);
+        res.emplace_back(down[nxt[v]], down[v]);
+        return res;
+    }
 
  public:
     using Graph = vector<vector<int>>;
@@ -195,11 +195,12 @@ struct HeavyLightDecomposition {
 
     HeavyLightDecomposition() = default;
     HeavyLightDecomposition(int n) : n(n), g(n) {}
-    HeavyLightDecomposition(Graph _g, int root = 0) : g(_g), id(0), size(g.size(), 0), depth(g.size(), 0), down(g.size(), -1), up(g.size(), -1), nxt(g.size(), root), par(g.size(), root), seg(g.size()) {
+    HeavyLightDecomposition(Graph _g, int root = 0) : n(_g.size()), g(_g), id(0), size(g.size(), 0), depth(g.size(), 0), down(g.size(), -1), up(g.size(), -1), nxt(g.size(), root), par(g.size(), root), seg(g.size()) {
         dfs_sz(root);
         dfs_hld(root);
     }
-    HeavyLightDecomposition(Graph _g, int root, vector<S> vertex_weight) : g(_g), id(0), size(g.size(), 0), depth(g.size(), 0), down(g.size(), -1), up(g.size(), -1), nxt(g.size(), root), par(g.size(), root), seg(g.size()) {
+    //rebuildが呼ばれているのと等価
+    HeavyLightDecomposition(Graph _g, int root, vector<S> vertex_weight) : n(_g.size()), g(_g), id(0), size(g.size(), 0), depth(g.size(), 0), down(g.size(), -1), up(g.size(), -1), nxt(g.size(), root), par(g.size(), root), seg(g.size()) {
         dfs_sz(root);
         dfs_hld(root);
         // for(int i = 0; i < g.size(); i++) cout << down[i] << " "; cout << "\n";
@@ -227,7 +228,7 @@ struct HeavyLightDecomposition {
 
     pair<int, int> idx(int i) const { return make_pair(down[i], up[i]); }
 
-    //�ȍ~��rebuild�܂���constructor��build�̂ǂ��炩���s���Ă��Ȃ��Ɛ���ɍ쓮���Ȃ��B
+    //以降はrebuildまたはconstructorでbuildのどちらかが行われていないと正常に作動しない。
     S path_query(int u, int v) {
         S ans(e());
         int l = lca(u, v);
@@ -268,19 +269,15 @@ struct HeavyLightDecomposition {
     S get_vertex_weight(int u) {
         return seg.get(idx(u).first);
     }
-    void edge_update(int u, S val) {
-
-    }
-    void edge_add(int u, S val) {
-
-    }
-    S get_edge_weight(int u) {
-
-    }
 };
 
-//edge_update, edge_add
-//la, jump
+//la, jump, get_path
+//https://nachiavivias.github.io/cp-library/cpp/tree/heavy-light-decomposition.html
+//を参考にla, medianなどを作る
+
+// モノイドに可換律を仮定している
+template<class S, S (*op)(S, S), S (*e)()>
+using HLD = HeavyLightDecomposition<S, op, e>;
 
 using S = int;
 S op(S x, S y) {

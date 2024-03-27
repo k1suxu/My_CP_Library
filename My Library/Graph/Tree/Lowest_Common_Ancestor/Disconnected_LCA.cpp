@@ -1,4 +1,4 @@
-//ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ğ‚¿‚á‚ñ‚Æƒ`ƒFƒbƒN‚µ‚Ä‚©‚çg‚¤‚±‚Æ(“¯‚¶—v—Ì‚Åª‚ğ¶¬‚µ‚È‚¢‚Æãè‚­‚¢‚©‚È‚¢‚±‚Æ‚ª‚ ‚é)
+//ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã‚’ã¡ã‚ƒã‚“ã¨ãƒã‚§ãƒƒã‚¯ã—ã¦ã‹ã‚‰ä½¿ã†ã“ã¨(åŒã˜è¦é ˜ã§æ ¹ã‚’ç”Ÿæˆã—ãªã„ã¨ä¸Šæ‰‹ãã„ã‹ãªã„ã“ã¨ãŒã‚ã‚‹)
 //LCA using doubling algorithm
 template<typename T = int>
 class Disconnected_LCA{
@@ -50,7 +50,7 @@ class Disconnected_LCA{
 
         if(u==v) return u;
 
-        //ˆê’v‚·‚é“_‚Ì‚Ğ‚Æ‚Â‘O‚Ì‚Æ‚±‚ë‚ÉˆÚ“®B
+        //ä¸€è‡´ã™ã‚‹ç‚¹ã®ã²ã¨ã¤å‰ã®ã¨ã“ã‚ã«ç§»å‹•ã€‚
         for(int i = k; i >= 0; i--) {
             if(dp[i][u] != dp[i][v]) {
                 u = dp[i][u];
@@ -77,8 +77,8 @@ class Disconnected_LCA{
         return make_pair(depth[u] - depth[lca], depth[v] - depth[lca]);
     }
 
-    //uvƒpƒXã‚Ìv_0, v_1, ... v_k‚ÉŠÖ‚µ‚Ä‚»‚Ìi”Ô–Ú‚ğ•Ô‚·(k<i‚Ì‚Æ‚«‚Í-1)
-    //0-indexed‚Åi‚ğw’è‚·‚é(0--Å‰)
+    //uvãƒ‘ã‚¹ä¸Šã®v_0, v_1, ... v_kã«é–¢ã—ã¦ãã®iç•ªç›®ã‚’è¿”ã™(k<iã®ã¨ãã¯-1)
+    //0-indexedã§iã‚’æŒ‡å®šã™ã‚‹(0--æœ€åˆ)
     int jump(int u, int v, int i) {
         pair<int, int> p = get_distance_to_LCA(u, v);
         if(p.first + p.second < i) return -1;
@@ -87,7 +87,7 @@ class Disconnected_LCA{
         return get_kth_ancestor(v, p.first + p.second -i);
     }
 
-    //u->lca, v->lcaƒpƒX‚ğ•Ô‚·
+    //u->lca, v->lcaãƒ‘ã‚¹ã‚’è¿”ã™
     pair<vector<int>, vector<int>> get_path_to_LCA(int u, int v) {
         int lca = get(u, v);
         vector<int> u_ret;
@@ -105,7 +105,7 @@ class Disconnected_LCA{
         return make_pair(u_ret, v_ret);
     }
 
-    //u->vƒpƒX‚ğ•Ô‚·B
+    //u->vãƒ‘ã‚¹ã‚’è¿”ã™ã€‚
     vector<int> get_path(int u, int v) {
         vector<int> u_ret, v_ret;
         tie(u_ret, v_ret) = get_path_to_LCA(u, v);

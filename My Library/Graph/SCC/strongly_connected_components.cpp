@@ -46,7 +46,7 @@ struct StronglyConnectedComponents {
     }
 
     vector<vector<int>> rebuild() {
-        //conponent���Ƃɂ܂Ƃ߂��O���t
+        //conponentごとにまとめたグラフ
         int N = *max_element(component.begin(), component.end()) + 1;
         vector<vector<int>> rebuilded_graph(N);
         for(int v = 0; v < N; v++) {
@@ -71,3 +71,7 @@ struct StronglyConnectedComponents {
         return groups;
     }
 };
+
+using SCC = StronglyConnectedComponents;
+// SCCのgroupsはグループ一つ一つを頂点としたときにトポロジカルソート順で入っている。
+// cf: https://judge.yosupo.jp/problem/scc

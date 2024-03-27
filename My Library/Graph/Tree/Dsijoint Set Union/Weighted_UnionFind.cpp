@@ -3,13 +3,14 @@
 //Disjoint Set Union
 //Weighted_UnionFind
 
+template<typename T_Weight>
 struct Weighted_UnionFind {
     vector<int> r;
-    vector<int> diff_weight;
+    vector<T_Weight> diff_weight;
 
     Weighted_UnionFind(int n) {
         r = vector<int>(n, -1);
-        diff_weight = vector<int>(n, 0);
+        diff_weight = vector<T_Weight>(n, 0);
     }
 
     int root(int x) {
@@ -19,13 +20,13 @@ struct Weighted_UnionFind {
         return r[x] = R;
     }
     //weight[y] - weight[x] = w;
-    void unite(int x, int y, int w) {
+    void unite(int x, int y, T_Weight w) {
         w += weight(x);
         w -= weight(y);
         x = root(x);
         y = root(y);
         if(x == y) return;
-        //xの方が次数大きく
+        
         if(r[x] < r[y]) swap(x, y), w = -w;
         r[y] = x;
         diff_weight[y] = w;
@@ -35,16 +36,16 @@ struct Weighted_UnionFind {
         return root(x) == root(y);
     }
 
-    int weight(int x) {
+    T_Weight weight(int x) {
         root(x);
         return diff_weight[x];
     }
     //return diff(x, y) if x, y stand in the same tree
-    //返り値がINF -> 図れな�?(自由)
-    int diff(int x, int y) {
+    //weight[y] - weight[x]
+    T_Weight diff(int x, int y) {
         if(!issame(x, y)) return INF;
         return weight(y) - weight(x);
     }
 };
 
-//������Ԃ��悤�ɂ�����
+//[TODO]: 矛盾を返すようにしたい

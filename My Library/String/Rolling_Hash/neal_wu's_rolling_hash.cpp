@@ -162,7 +162,7 @@ const hash_int HASH_INV[] = {1 / HASH_MULT[0], 1 / HASH_MULT[1]};
 
 vector<hash_int> hash_pow[] = {{1}, {1}};
 
-const int INF = int(1e9) + 5;
+const int HASH_INF = int(1e9) + 5;
 
 template<typename T_string = string>
 struct string_hash {
@@ -283,7 +283,7 @@ struct string_hash {
         return substring_hash(start, end) == reverse_substring_hash(start, end);
     }
 
-    int compare(int start1, int start2, int max_length = INF) const;
+    int compare(int start1, int start2, int max_length = HASH_INF) const;
 };
 
 uint64_t concat_hashes(uint64_t hash1, uint64_t hash2, int len2) {
@@ -305,7 +305,7 @@ uint64_t concat_hashes(uint64_t hash1, uint64_t hash2, int len2) {
 
 template<typename T_string>
 int first_mismatch(const string_hash<T_string> &hash1, int start1,
-                   const string_hash<T_string> &hash2, int start2, int max_length = INF) {
+                   const string_hash<T_string> &hash2, int start2, int max_length = HASH_INF) {
     max_length = min({max_length, hash1.length() - start1, hash2.length() - start2});
 
     static const int FIRST = 5;
@@ -339,7 +339,7 @@ int first_mismatch(const string_hash<T_string> &hash1, int start1,
 
 template<typename T_string>
 int hash_compare(const string_hash<T_string> &hash1, int start1,
-                 const string_hash<T_string> &hash2, int start2, int max_length = INF) {
+                 const string_hash<T_string> &hash2, int start2, int max_length = HASH_INF) {
     int mismatch = first_mismatch(hash1, start1, hash2, start2, max_length);
     int length1 = min(hash1.length() - start1, max_length);
     int length2 = min(hash2.length() - start2, max_length);

@@ -1,4 +1,4 @@
-//������ړ��ł����Ⴄ��̌�
+//無限回移動できちゃうやつの個数
 struct in_cycle {
     int n;
     vector<vector<int>> g;

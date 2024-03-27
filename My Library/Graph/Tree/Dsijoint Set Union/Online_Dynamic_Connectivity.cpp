@@ -91,7 +91,7 @@ class dynamic_connectivity{
             return t;
         }
         void push(np t){
-            //’x‰„•]‰¿—\’è
+            //é…å»¶è©•ä¾¡äºˆå®š
         }
         void rot(np t,bool b){
             np x=t->p,y=x->p;
@@ -320,5 +320,5 @@ class dynamic_connectivity{
 };
 
 //ref: https://qiita.com/hotman78/items/78cd3aa50b05a57738d4
-//dynamic tree‚ÌsubtreeƒNƒGƒŠ‚É‚±‚½‚¦‚ç‚ê‚é
-//pathƒNƒGƒŠ‚Ílink-cut-tree‚É‚â‚ç‚¹‚é
+//dynamic treeã®subtreeã‚¯ã‚¨ãƒªã«ã“ãŸãˆã‚‰ã‚Œã‚‹
+//pathã‚¯ã‚¨ãƒªã¯link-cut-treeã«ã‚„ã‚‰ã›ã‚‹

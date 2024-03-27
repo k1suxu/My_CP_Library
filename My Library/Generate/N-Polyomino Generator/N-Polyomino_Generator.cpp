@@ -1,8 +1,7 @@
 struct PolyominoState {
-  std::vector<std::vector<int>> number, field; //number: 番号を管理、field: 設置済みかを管理
+  std::vector<std::vector<int>> number, field;
   PolyominoState(int n, int m):number(n, std::vector<int>(m,-1)),field(n, std::vector<int>(m,0)){}
 
-  //フィールドの余白を削る
   void minimize(){
     if(field.size() == 0) return;
     if(field[0].size() == 0) return;
@@ -39,7 +38,7 @@ struct PolyominoState {
 class GeneratePolyomino {
   int N;
   
-  //設置可能かどうかを確認
+  //設置可能かど�?かを確�?
   bool check(const PolyominoState& s, int y, int x){
     int n = s.number.size();
     int m = s.number[0].size();
@@ -55,11 +54,9 @@ class GeneratePolyomino {
 public:
   GeneratePolyomino(int N):N(N){}
   
-  //Nオミノをすべて生成
   std::vector<PolyominoState> generate(){
     std::vector<PolyominoState> ret;
 
-    //初期状態
     PolyominoState st(N, 2*N-1);
     st.number[0][N-1] = 1;
     if(N>1) st.number[0][N] = 2;
@@ -76,8 +73,6 @@ public:
 
     while(!que.empty()){
       st = que.front(); que.pop();
-
-      //フィールドの状態から設置個数、設置された番号の最大値、空マスの番号の最大値を取得
       int n_last = -1;
       int f_last = -1;
       int f_num = 0;
@@ -91,24 +86,21 @@ public:
         }
       }
 
-      //Nオミノだったら、フィールドの余白を消して返り値ベクトルに入れておく
       if(f_num==N){
         st.minimize();
         ret.push_back(st);
         continue;
       }
       
-      //空マスから1つ選んで状態を更新する
       for(int i=0; i<st.number.size(); i++){
         for(int j=0; j<st.number[i].size(); j++){
-          if(st.number[i][j] == -1) continue; //番号がなければスキップ
-          if(st.field[i][j] == 1) continue;  //設置済みならスキップ
-          if(st.number[i][j] < f_last) continue; //設置番号より小さい番号ならスキップ
+          if(st.number[i][j] == -1) continue;
+          if(st.field[i][j] == 1) continue;
+          if(st.number[i][j] < f_last) continue;
           
           PolyominoState tmp = st;
-          tmp.field[i][j] = 1; //設置
+          tmp.field[i][j] = 1;
 
-          //下、左、右、上の順に空マス番号を割り当てる
           int number = n_last+1;
           if(check(tmp, i-1, j)) tmp.number[i-1][j] = number++;
           if(check(tmp, i, j-1)) tmp.number[i][j-1] = number++;
