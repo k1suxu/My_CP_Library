@@ -1,4 +1,4 @@
-<typename T> class SparseTable_2D {
+template<typename T> class SparseTable_2D {
 private:
     const int R, C;
     vector<int> LogTable;

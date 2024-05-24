@@ -28,6 +28,10 @@ struct UnionFind {
         return -r[root(x)];
     }
 
+    bool all_connected() {
+        return size(0) == (int)r.size();
+    }
+
     // int number_of_set() {
     //     unordered_set<int> st;
     //     for(int i = 0; i < (int)r.size(); i++) st.insert(root(i));
@@ -37,6 +41,7 @@ struct UnionFind {
     // only vertices: not including leader pos
     // vector<vector<int>> decompose() {
     //     vector<pair<int, int>> p;
+    //     p.reserve((int)r.size());
     //     for(int i = 0; i < (int)r.size(); i++) p.emplace_back(root(i), i);
     //     sort(all(p));
     //     //first:root, second:vertices

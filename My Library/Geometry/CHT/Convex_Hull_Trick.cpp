@@ -107,10 +107,9 @@ private:
         }
     }
     T query(node *cur, const T k, T l, T r) const {
-        T ans = (isMin? numeric_limits<T>::max() : -numeric_limits<T>::max());
+        T ans = numeric_limits<T>::max();
         while(cur){
-            if(isMin) ans = min(ans, cur->f(k));
-            else ans = max(ans, cur->f(k));
+            ans = min(ans, cur->f(k));
             const T mid = (l + r) / 2;
             if(k < mid){
                 cur = cur->left, r = mid;
@@ -135,22 +134,25 @@ public:
     }
     // ~CHT(){ clear(root); }
     // f(x) = a * x + b を挿入
-    void add_line(const T a, const T b){
+    void add_line(T a, T b){
+        if(!isMin) a = -a, b = -b;
         node nw(a, b, lpos, rpos);
         return _add_line(root, &nw, lpos, rpos);
     }
     // f(x) = a * x + b (x ∈ [l, r)) を挿入
-    void add_segment(const T a, const T b, const T l, const T r){
+    void add_segment(const T l, const T r, T a, T b){
+        if(!isMin) a = -a, b = -b;
         assert(l < r);
         node nw(a, b, l, r);
         return _add_segment(root, &nw, lpos, rpos);
     }
     // x = k での最小値
     T query(const T k) const {
+        if(!isMin) return -query(root, k, lpos, rpos);
         return query(root, k, lpos, rpos);
     }
 };
 
 /*注意*/
-/*isMin = false すなわちmaxをとるクエリはverifyしてない*/
+/*isMin = false すなわちmaxをとるクエリはverifyした*/  // verify ref: https://atcoder.jp/contests/abc353/submissions/53476459
 // query(x) == numeric_limits<long long>::max() -> そこに線分は存在しない

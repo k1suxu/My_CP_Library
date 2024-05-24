@@ -44,3 +44,11 @@ vector<int> manacher(T_String str, bool calc_even = false) {
     }
     return len;
 }
+
+/* [回文判定] [閉区間]
+auto is_palindrome = [&](int l, int r) -> bool {
+    if(r-l+1==1) return true;
+    int center = (l + r);
+    return r-l+1 <= mana[center];
+};
+*/

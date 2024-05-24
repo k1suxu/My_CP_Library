@@ -1,12 +1,12 @@
 //ref: https://github.com/naskya/heuristic-contest/blob/main/src/main.cpp
-struct timer {
+struct my_timer {
     private:
     const std::chrono::system_clock::time_point start;
 
     public:
     static constexpr unsigned time_limit = 2000 - 20;
 
-    timer() noexcept : start(std::chrono::system_clock::now()) {}
+    my_timer() noexcept : start(std::chrono::system_clock::now()) {}
 
     [[nodiscard]] auto elapsed() const {
         using namespace std::chrono;

@@ -10,7 +10,7 @@ long long extended_gcd(long long a, long long b, long long &x, long long &y) {
         y = 0;
         return a;
     }
-    ll d = extended_gcd(b, a%b, y, x);
+    long long d = extended_gcd(b, a%b, y, x);
     y -= a/b*x;
     return d;
 }
