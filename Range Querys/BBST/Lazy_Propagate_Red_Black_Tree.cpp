@@ -307,3 +307,5 @@ public:
 };
 
 //ref: https://ei1333.github.io/library/structure/bbst/lazy-red-black-tree.hpp
+
+// bin searchないでupdateやってないの大丈夫なのかな？？

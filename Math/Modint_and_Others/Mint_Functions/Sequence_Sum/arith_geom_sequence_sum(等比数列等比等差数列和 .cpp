@@ -23,7 +23,7 @@ T ix_geom_seq_sum(T r, U n) { // Σ [1,n) ix^i (= Σ [0,n) ix^i)
     return ret;
 }
 
-// 初項1公比r長さnの等比数列の和を求める。つまり以下式を求める
+// 初項a公比r長さnの等比数列の和を求める。つまり以下式を求める
 // a + ar + ar^2 + ... + r^(n-1) = Σ [0,n) ar^i
 // O(log^2 n)
 template<typename T, typename U = long long>

@@ -1,6 +1,7 @@
 struct UnionFind {
     vector<int> r;
     
+    UnionFind() = default;
     UnionFind(int n) {
         r = vector<int>(n, -1);
     }

@@ -77,19 +77,15 @@ struct Undo_UnionFind_Component_Sum {
     }
 };
 
-//mergeの計算にto(size)が必要な可能性もあるのでSの中でtoを定義すること
 struct S {
     int to;
-    int edge;
 
-    S() = default;
-    S(int to, int edge) : to(to), edge(edge) {}
+    S() : to(-1) {}
 
     int size() {
         assert(to<0);
         return -to;
     }
 };
-void merge(S &par, S ch) {
-    par.edge += ch.edge;
+void merge(S &par, S ch) { // toの更新は必要ない
 }

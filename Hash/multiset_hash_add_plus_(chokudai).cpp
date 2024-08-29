@@ -1,10 +1,10 @@
 // Key -> long longのHasherが必要
 template<typename Key, class Hasher = std::hash<Key>>
-struct Zobrist_Hash {
+struct multiset_hash_plus {
     unordered_map<Key, long long, Hasher> table;
     mt19937_64 rng;
 
-    Zobrist_Hash() {
+    multiset_hash_plus() {
         random_device rnd;
         srand((int)time(0));
         rng = mt19937_64(rnd() * rand());
@@ -15,18 +15,17 @@ struct Zobrist_Hash {
             table[e] = rng();
         }
 
-        unordered_map<Key, bool, Hasher> used;
-
         vector<long long> hashed((int)x.size() + 1, 0);
-        for(int i = 0; i < (int)x.size(); i++) {
-            if(used.find(x[i]) == used.end()) {
-                hashed[i+1] = hashed[i] ^ table[x[i]];
-                used[x[i]] = true;
-            } else {
-                hashed[i+1] = hashed[i];
-            }
-        }
+        for(int i = 0; i < (int)x.size(); i++) hashed[i+1] = hashed[i] + table[x[i]];
         return hashed;
+    }
+
+    long long get_hash(vector<long long> &hashed, int l, int r) {
+        return hashed[r] - hashed[l];
+    }
+
+    long long issame(vector<long long> &hashed1, int l1, int r1, vector<long long> &hashed2, int l2, int r2) {
+        return get_hash(hashed1, l1, r1) == get_hash(hashed2, l2, r2);
     }
 };
 
@@ -40,3 +39,5 @@ struct Zobrist_Hash {
 //         return hash;
 //     }
 // };
+
+//ref: https://x.com/chokudai/status/875112616523218944

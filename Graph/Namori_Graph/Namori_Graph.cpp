@@ -1,6 +1,5 @@
 template< typename G >
-struct Namori
-{
+struct Namori {
     const G &g;
     vector< int > in;
 

@@ -55,3 +55,20 @@ Inner_FPS<Mint> polynomial_interpolation(const Inner_FPS<Mint> &xs, const Inner_
     for(int i = k; i-- > 1;) g[i] = g[i<<1] * mul[i<<1 | 1] + g[i<<1 | 1] * mul[i<<1];
     return g[1];
 }
+
+// インスタンスは自動解釈される
+// Σf^i [0, n)を逆元なしで求める。
+template<template<typename> class Inner_FPS, typename Mint>
+Inner_FPS<Mint> geometric_polynomial(const Inner_FPS<Mint> &x, const long long &n, const int &deg) {
+    if (n == 0) return Inner_FPS<Mint>(deg, 0);
+
+    long long m = n/2;
+    Inner_FPS<Mint> half = geometric_polynomial(x, m, deg);
+    Inner_FPS<Mint> res = half + x.pow(m, deg) * half;
+    if (n % 2 == 1) {
+        res *= x;
+        ++res[0];
+    }
+
+    return res.pre(deg);
+}
