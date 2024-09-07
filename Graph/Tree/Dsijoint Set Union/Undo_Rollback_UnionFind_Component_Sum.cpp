@@ -37,9 +37,10 @@ struct Undo_UnionFind_Component_Sum {
         r[y].to = x;
         return true;
     }
-    // bool node_add(int x, S add) {
-    //     return unite_add(x, x, add);
-    // }
+
+    void node_add(int x, S add) {
+        unite_add(x, x, add);
+    }
 
     int root(int x) {
         if(r[x].to < 0) return x;
@@ -89,3 +90,4 @@ struct S {
 };
 void merge(S &par, S ch) { // toの更新は必要ない
 }
+// S()が単位減に相当

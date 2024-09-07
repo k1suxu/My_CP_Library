@@ -5,9 +5,9 @@ struct Euler_Tour {
     Euler_Tour(int n) : n(n), g(n) {}
     Euler_Tour(vector<vector<int>> G) : n((int)G.size()), g(G) {}
 
-    void add_edge(int a, int b, bool directed = false) {
+    void add_edge(int a, int b) {
         g[a].push_back(b);
-        if(!directed) g[b].push_back(a);
+        g[b].push_back(a);
     }
 
     vector<int> order;

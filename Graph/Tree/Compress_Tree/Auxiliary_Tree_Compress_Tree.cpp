@@ -67,6 +67,7 @@ struct Compress_Tree {
     // 頂点vsを含むAuxiliary Treeを構築する
     // 結果はg0に入る
     // 返り値はAuxiliary Treeの根頂点
+    // 逆辺は入らない
     int get_compressed_tree(vector<int> &vs, vector<vector<int>>& g0) {
         assert(g0.size() == g.size());
         sort(vs.begin(), vs.end(), [&](int x, int y) -> bool { return fs[x] < fs[y]; });

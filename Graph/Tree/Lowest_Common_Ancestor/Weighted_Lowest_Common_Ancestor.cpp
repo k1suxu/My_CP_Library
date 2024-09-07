@@ -181,7 +181,7 @@ class Weighted_LCA{
         return;
     }
     
-    void rebuild(const int _root = 0) {
+    void build(const int _root = 0) {
         root = _root;
         k = 1;
         int two = 2;
