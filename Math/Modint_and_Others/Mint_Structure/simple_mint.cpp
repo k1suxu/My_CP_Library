@@ -158,5 +158,4 @@ ostream& operator<<(ostream& os, mint& x) {
     return os;
 }
 
-
 // 1e9 + 7をmodとして使いたいときに注意！！！！特にCFやCCなどのAtCoder以外
