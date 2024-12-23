@@ -15,16 +15,17 @@ struct Weighted_UnionFind {
         return r[x] = R;
     }
     //weight[y] - weight[x] = w;
-    void unite(int x, int y, T_Weight w) {
+    bool unite(int x, int y, T_Weight w) {
         w += weight(x);
         w -= weight(y);
         x = root(x);
         y = root(y);
-        if(x == y) return;
+        if(x == y) return diff(x, y) == w;
         
         if(r[x] < r[y]) swap(x, y), w = -w;
         r[y] = x;
         diff_weight[y] = w;
+        return true;
     }
 
     bool issame(int x, int y) {
@@ -72,3 +73,4 @@ struct Weighted_UnionFind {
 };
 
 //[TODO]: 矛盾を返すようにしたい
+//        -> 多分対応できているはず(unite = falseの時が矛盾)

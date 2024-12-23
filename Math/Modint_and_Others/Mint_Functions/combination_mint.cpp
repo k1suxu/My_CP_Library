@@ -25,19 +25,19 @@ mint C(long long n, long long k) {
     if(n<k) {
         cerr << "\nAssertion Failed!!\n";
         cerr << "Expression N >= K, ";
-        cerr << "where n=" << n << ",k=" << k << "\n\n";
+        cerr << "where n=" << n << ", k=" << k << "\n\n";
         return 0;
     }
     while(n > fact.size()-1) {
         fact.push_back(fact.back() * fact.size());
         fact_inv.push_back(fact.back().inv());
     }
-    return fact[n]*fact_inv[n-k]*fact_inv[k];
+    return fact[n] * fact_inv[n-k] * fact_inv[k];
 }
 mint H(long long n, long long k) {
-    assert(n>=1);
+    assert(n >= 1);
     return C(n+k-1, k);
 }
 mint Cat(long long n) {
-    return C(2*n, n)-C(2*n, n-1);
+    return C(2*n, n) - C(2*n, n-1);
 }

@@ -40,29 +40,30 @@ struct StronglyConnectedComponents {
     }
 
     int number_of_components() const {
-        unordered_set<int> st;
-        for(auto e : component) st.insert(e);
-        return st.size();
+        return *max_element(component.begin(), component.end()) + 1;
     }
 
-    vector<vector<int>> rebuild() {
+    vector<vector<int>> get_compressed_DAG() {
         //conponentごとにまとめたグラフ
-        int N = *max_element(component.begin(), component.end()) + 1;
-        vector<vector<int>> rebuilded_graph(N);
-        for(int v = 0; v < N; v++) {
+        const int G_SZ = *max_element(component.begin(), component.end()) + 1;
+        vector<vector<int>> rebuilded_graph(G_SZ);
+        for(int v = 0; v < n; v++) {
             for(auto e : graph[v]) {
                 if(component[v] != component[e]) {
-                    rebuilded_graph[component[v]].push_back(component[e]);
-                    rebuilded_graph[component[e]].push_back(component[v]);
+                    rebuilded_graph[component[v]].emplace_back(component[e]);
                 }
             }
+        }
+        for(auto &e : rebuilded_graph) {
+            sort(e.begin(), e.end());
+            e.erase(unique(e.begin(), e.end()), e.end());
         }
         return rebuilded_graph;
     }
     
     vector<vector<int>> pull_groups() {
-        const int N = *max_element(component.begin(), component.end()) + 1;
-        vector<vector<int>> groups(N);
+        const int G_SZ = *max_element(component.begin(), component.end()) + 1;
+        vector<vector<int>> groups(G_SZ);
         
         for(int i = 0; i < n; i++) {
             groups[component[i]].push_back(i);

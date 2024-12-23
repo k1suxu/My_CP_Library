@@ -1,6 +1,8 @@
 // ref: https://ei1333.github.io/library/string/suffix-array.hpp
 // equal_range: S[sa[i]:n]のprefixがT一致するiの左端と右端(半開区間)
-template <typename T_string>
+// SuffixArray sa(s); としたらsa[i]でsuffix arrayのi番目が取れる
+// デフォルトでは空文字列のsa[0]=Nが入ることに注意する！
+template <typename T>
 struct SuffixArray : vector<int> {
 private:
     vector<int> sa_is(const vector<int> &s) const {
@@ -35,7 +37,7 @@ private:
             partial_sum(r.begin(), r.end(), r.begin());
             for (int k = (int)ret.size() - 1, i = ret[k]; k >= 1; i = ret[--k]) {
                 if (i >= 1 and not is_s[i - 1]) {
-                ret[--r[s[i - 1]]] = i - 1;
+                    ret[--r[s[i - 1]]] = i - 1;
                 }
             }
         };
@@ -88,12 +90,13 @@ private:
     }
 
 public:
-    T_string vs;
+    bool contain_empty;
+    T vs;
 
-    explicit SuffixArray(const T_string &vs, bool compress = false) : vs(vs) {
+    explicit SuffixArray(const T &vs, bool contain_empty = true, bool compress = false) : vs(vs), contain_empty(contain_empty) {
         vector<int> new_vs(vs.size() + 1);
         if (compress) {
-            T_string xs = vs;
+            T xs = vs;
             sort(xs.begin(), xs.end());
             xs.erase(unique(xs.begin(), xs.end()), xs.end());
             for (int i = 0; i < (int)vs.size(); i++) {
@@ -106,6 +109,7 @@ public:
             }
         }
         auto ret = sa_is(new_vs);
+        if(!contain_empty) ret.erase(ret.begin());
         assign(ret.begin(), ret.end());
     }
 
@@ -128,8 +132,8 @@ public:
     }
 
     // t <= s[i,N) なる最小の i を返す O(|t| log |s|)
-    int lower_bound(const T_string &t) {
-        int ng = 0, ok = (int)size();
+    int lower_bound(const T &t) {
+        int ng = (contain_empty? 0 : -1), ok = (int)size();
         while (ok - ng > 1) {
             int mid = (ok + ng) / 2;
             if (lt_substr(t, at(mid))) ng = mid;
@@ -139,7 +143,7 @@ public:
     }
 
     // O(|t| log |s|)
-    pair<int, int> equal_range(T_string &t) {
+    pair<int, int> equal_range(T &t) {
         int low = lower_bound(t);
         int ng = low - 1, ok = (int)size();
         t.back()++;
@@ -152,6 +156,8 @@ public:
         return {low, ok};
     }
 };
+// デフォルトでは空文字列あり(sa[0]=N)の圧縮false
+// contain_empty = falseの場合はまだバグあるかも！！注意すること！！
 
 template <>
 void SuffixArray<string>::output() const {

@@ -28,9 +28,7 @@ vector<int> bfs(vector<vector<pair<int, int>>> &g, int s, int gl) {
     int n = g.size();
     queue<int> que;
     vi dist(n, -1);
-    //first:??????_, second:?g????
     vpii nxt(n, make_pair(-1, -1));
-    //first:?O????_, second:?g??????
     vpii pre(n, make_pair(-1, -1));
     que.push(s);
     dist[s] = 0;
@@ -49,12 +47,10 @@ vector<int> bfs(vector<vector<pair<int, int>>> &g, int s, int gl) {
 
     vi used;
     
-    //??
     while(pre[gl].first != -1) {
         used.push_back(pre[gl].second);
         gl = pre[gl].first;
     }
-    //???_
     // used.push_back(gl);
     // while(pre[gl].first != -1) {
     //     used.push_back(pre[gl].first);

@@ -60,7 +60,7 @@ struct UnionFind {
     //     return ret;
     // }
 
-    //leader and groups vertex
+    // leader and groups vertex
     // vector<pair<int, vector<int>>> decompose() {
     //     vector<pair<int, int>> p;
     //     for(int i = 0; i < (int)r.size(); i++) p.emplace_back(root(i), i);

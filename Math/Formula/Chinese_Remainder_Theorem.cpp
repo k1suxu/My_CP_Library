@@ -23,7 +23,7 @@ pair<long long, long long> Chinese_Remainder_Theorem(const vector<long long> b, 
         if((b[i] - r) % d != 0) return make_pair(0, -1);
         long long tmp = (b[i] - r) / d * p % (m[i]/d);
         r += M * tmp;
-        M *= m[i]/d;w
+        M *= m[i]/d;
     }
     return make_pair((r%M+M)%M, M);
 }

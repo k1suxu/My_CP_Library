@@ -74,6 +74,6 @@ struct fast_prime_factorizer {
         sort(left.begin(), left.end());
         return left;
     }
-}(factorizer);
+} factorizer;
 
 // 1は素因数なしとみなす(ans.size() = 0)
