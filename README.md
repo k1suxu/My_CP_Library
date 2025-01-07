@@ -7,4 +7,3 @@ Library for Competitive Programming
 - https://nyaannyaan.github.io/library/
 - https://kopricky.github.io/
 - https://tjkendev.github.io/procon-library/
-- 
