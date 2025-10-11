@@ -38,6 +38,7 @@ public:
     vector<vector<int>> tree_generator_using_UF(const int n, const int indexed=0) {
         UnionFind UF(n+indexed);
         vector<vector<int>> g(n+indexed);
+        vpii edges;
         int edge_count = 0;
 
         while(edge_count < n-1) {
@@ -49,8 +50,10 @@ public:
                 g[v].push_back(u);
                 UF.unite(u, v);
                 ++edge_count;
+                edges.emplace_back(u, v);
             }
         }
+        // edgesを返せば辺を返せる
         return g;
     }
 
@@ -60,10 +63,20 @@ public:
     int get_int(int l, int r) {
         return rng()%(r-l)+l;
     }
+    int get_ll(ll l, ll r) {
+        return rng()%(r-l)+l;
+    }
 
     // return random array consisting of non-negatove integer in [l, r)
     vector<int> get_array(const int len, const int l, const int r) {
         vector<int> x;
+        for(int i = 0; i < len; ++i) {
+            x.push_back(get_int(l, r));
+        }
+        return x;
+    }
+    vector<ll> get_array_ll(const int len, const ll l, const ll r) {
+        vector<ll> x;
         for(int i = 0; i < len; ++i) {
             x.push_back(get_int(l, r));
         }
@@ -78,7 +91,21 @@ public:
         return x;
     }
 
+    string get_string(const int len, bool lower, bool upper, bool number) {
+        vector<char> char_set;
+        if(lower) for(int i = 0; i < 26; i++) char_set.push_back((char)('a' + i));
+        if(upper) for(int i = 0; i < 26; i++) char_set.push_back((char)('A' + i));
+        if(number) for(int i = 0; i < 9; i++) char_set.push_back((char)('0' + i));
+        return get_string(len, char_set);
+    }
+
+    string get_string(const int len, vector<char> char_set) {
+        string s;
+        for(int i = 0; i < len; i++) s.push_back(char_set[get_int(0, (int)char_set.size())]);
+        return s;
+    }
+
     void my_sleep(const int millisec) {
         std::this_thread::sleep_for(std::chrono::milliseconds(millisec));
     }
-};
+} rd;

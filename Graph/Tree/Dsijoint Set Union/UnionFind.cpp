@@ -32,6 +32,18 @@ struct UnionFind {
     bool all_connected() {
         return size(0) == (int)r.size();
     }
+    
+    // // not debugged
+    // vector<int> get_component(int x) {
+    //     int cur = x;
+    //     vector<int> ret = {cur};
+    //     cur = nxt[cur];
+    //     while (cur != x) {
+    //         ret.emplace_back(cur);
+    //         cur = nxt[cur];
+    //     }
+    //     return ret;
+    // }
 
     // int number_of_set() {
     //     unordered_set<int> st;

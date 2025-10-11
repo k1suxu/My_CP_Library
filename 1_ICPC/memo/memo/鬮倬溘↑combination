@@ -1,0 +1,28 @@
+def inverse(n, mod):
+    return pow(n, mod-2, mod)
+i = 1
+temp = 1
+N = 10**6
+dc = {0:1}
+for i in range(1,N):
+    temp *= i
+    temp %= mod
+    dc[i] = temp
+temp = inverse(temp,mod)
+dc[-i] = temp
+for i in reversed(range(1,N)):
+    temp *= i
+    temp %= mod
+    dc[-i+1] = temp
+
+def combi(n, r, mod):
+    if n < r or r < 0:
+        return 0
+    if r == 0 or r == n:
+        return 1
+    else:
+        return ((((dc[n]*dc[-r])%mod)*dc[r-n])%mod)
+    
+
+#a = combi(n,r,mod)
+

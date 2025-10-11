@@ -246,7 +246,7 @@ struct Interval_Counting {
     void erase(int L, int R) {
         seg.apply(L, R, -1);
     }
-    long long run() {
+    long long count() {
         auto [len,mi,cnt] = seg.prod(0, n);
         if(mi == 0) len -= cnt;
         return len;

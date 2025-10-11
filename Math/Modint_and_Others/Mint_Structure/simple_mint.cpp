@@ -29,10 +29,10 @@ struct Modular_Int {
     
     //use this basically
     Mint_Type inv() const {
+        assert(val() != 0);
         return Mint_Type(*this) ^ (MOD-2);
     }
-    //only if the module number is not prime
-    //Don't use. This is broken.
+    // only if the module number is not prime
     // Mint_Type inv() const {
     //     long long a = (x%MOD+MOD)%MOD, b = MOD, u = 1, v = 0;
     //     while(b) {

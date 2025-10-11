@@ -5,8 +5,10 @@ private:
         size[cur] = 1;
         for (auto& dst : g[cur]) {
             if (dst == par[cur]) {
-                if (g[cur].size() >= 2 && int(dst) == int(g[cur][0])) swap(g[cur][0], g[cur][1]);
-                else continue;
+                if (g[cur].size() >= 2 && (int)dst == (int)g[cur][0])
+                swap(g[cur][0], g[cur][1]);
+                else
+                continue;
             }
             depth[dst] = depth[cur] + 1;
             par[dst] = cur;
@@ -22,7 +24,7 @@ private:
         down[cur] = id++;
         for (auto dst : g[cur]) {
             if (dst == par[cur]) continue;
-            nxt[dst] = (int(dst) == int(g[cur][0]) ? nxt[cur] : int(dst));
+            nxt[dst] = ((int)dst == (int)g[cur][0] ? nxt[cur] : (int)dst);
             dfs_hld(dst);
         }
         up[cur] = id;
@@ -50,10 +52,11 @@ private:
 
 public:
     G& g;
-    int id;
+    int root, id;
     vector<int> size, depth, down, up, nxt, par;
-    HeavyLightDecomposition(G& _g, int root = 0)
+    HeavyLightDecomposition(G& _g, int _root = 0)
         : g(_g),
+            root(_root),
             id(0),
             size(g.size(), 0),
             depth(g.size(), 0),
@@ -61,11 +64,6 @@ public:
             up(g.size(), -1),
             nxt(g.size(), root),
             par(g.size(), root) {
-        dfs_sz(root);
-        dfs_hld(root);
-    }
-
-    void build(int root) {
         dfs_sz(root);
         dfs_hld(root);
     }
@@ -96,7 +94,7 @@ public:
 
     template <typename F>
     void subtree_query(int u, bool vertex, const F& f) {
-        f(down[u] + int(!vertex), up[u]);
+        f(down[u] + (int)!vertex, up[u]);
     }
 
     int lca(int a, int b) {
@@ -109,3 +107,7 @@ public:
 
     int dist(int a, int b) { return depth[a] + depth[b] - depth[lca(a, b)] * 2; }
 };
+// ref: https://nyaannyaan.github.io/library/tree/heavy-light-decomposition.hpp.html
+// fは半開区間であることに注意する！！
+// idはhld.idx(i).firstで取ってくる(参考：https://atcoder.jp/contests/abc295/submissions/65353222)
+// fはあくまで区間を渡してくるため、それをいい感じにやるときは、fのなかでop(ans, seg.prod(l, r))みたいにする必要があることに注意する！！

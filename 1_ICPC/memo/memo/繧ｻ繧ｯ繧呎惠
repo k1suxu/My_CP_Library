@@ -1,0 +1,69 @@
+# セグメント木
+class SegTree:
+    def __init__(self, init_list, segfunc, ide_ele):
+        self.n = len(init_list)
+        self.segfunc = segfunc
+        self.ide_ele = ide_ele
+        self.num = 2 ** (self.n - 1).bit_length()
+        self.tree = [ide_ele] * 2 * self.num
+        for k in range(self.n):
+            self.tree[self.num + k] = init_list[k]
+        for k in range(self.num - 1, 0, -1):
+            self.tree[k] = self.segfunc(self.tree[2 * k], self.tree[2 * k + 1])
+    
+    # idxがk(0-indexed)である要素を返す
+    def __getitem__(self, k):
+        return self.tree[self.num + k]
+
+    #【一点加算】idxがk(0-indexed)である要素にxを加える
+    def add(self, k, x):
+        k += self.num
+        self.tree[k] += x
+        while k > 1:
+            self.tree[k // 2] = self.segfunc(self.tree[k], self.tree[k ^ 1])
+            k //= 2
+
+    #【一点更新】idxがk(0-indexed)である要素をxに更新する
+    def update(self, k, x):
+        k += self.num
+        self.tree[k] = x
+        while k > 1:
+            self.tree[k // 2] = self.segfunc(self.tree[k], self.tree[k ^ 1])
+            k //= 2
+
+    #【区間内のクエリを実行する】区間[l, r)でsegfuncしたものを返す
+    def query(self, l, r):
+        res = self.ide_ele
+        l += self.num
+        r += self.num
+        while l < r:
+            if l % 2 == 1:
+                res = self.segfunc(res, self.tree[l])
+                l += 1
+            l //= 2
+
+            if r % 2 == 1:
+                res = self.segfunc(res, self.tree[r - 1])
+            r //= 2
+        return res
+    
+    def lis(self):
+        return self.tree
+
+# segfunc        / ide_ele / 操作
+# x + y          / 0       / 区間内の和を求める(RSQ)
+# x * y          / 1       / 区間内の積を求める
+# min(x, y)      / inf     / 区間内の最小値を求める(RMQ)
+# max(x, y)      / -inf    / 区間内の最大値を求める(RMQ)
+# math.gcd(x, y) / 0       / 区間内の最大公約数を求める
+# x ^ y          / 0       / 区間内の排他的論理和を求める
+
+N = ii()
+
+def segfunc(x, y):
+    return x + y
+ide_ele = 0
+
+seg = SegTree([0]* N, segfunc, ide_ele)
+
+min(x,y) float()

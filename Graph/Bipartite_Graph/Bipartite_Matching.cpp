@@ -1,83 +1,66 @@
-template<typename T>
-struct Edge {
-    int to;
-    T cap;
-    int rev;
+// ref: https://ei1333.github.io/library/graph/flow/bipartite-matching.hpp
+struct BipartiteMatching {
+    vector<vector<int>> graph;
+    vector<int> alive, used, match;
+    int timestamp;
 
-    Edge() = default;
-    Edge(int to, T cap, int rev) : to(to), cap(cap), rev(rev) {}
-};
+    explicit BipartiteMatching(int n) : graph(n), alive(n, 1), used(n, 0), match(n, -1), timestamp(0) {}
 
-template<typename T>
-struct Bipartite_Matching {
-    const T E = numeric_limits<T>::max();
-    const T zero = 0;
-    int n;
-    vector<vector<Edge<T>>> g;
-    vector<int> level, iter;
-
-    Bipartite_Matching(int n) : n(n), g(n) {}
-
-    void add_edge(int from, int to, T cap) {
-        Edge<T> f(to, cap, g[to].size());
-        Edge<T> t(from, zero, g[from].size());
-        g[from].push_back(f);
-        g[to].push_back(t);
+    void add_edge(int u, int v) {
+        graph[u].push_back(v);
+        graph[v].push_back(u);
     }
 
-    bool bfs(int s, int t) {
-        level.assign(n, -1);
-        level[s] = 0;
-        queue<int> que;
-        que.push(s);
-
-        while(que.size()) {
-            int v = que.front();
-            que.pop();
-
-            for(auto e : g[v]) {
-                if(e.cap > zero && level[e.to] < 0) {
-                    level[e.to] = level[v] + 1;
-                    que.push(e.to);
-                }
+    bool augment(int idx) {
+        used[idx] = timestamp;
+        for (auto &to : graph[idx]) {
+            int to_match = match[to];
+            if (alive[to] == 0) continue;
+            if (to_match == -1 ||
+                (used[to_match] != timestamp && augment(to_match))) {
+                match[idx] = to;
+                match[to] = idx;
+                return true;
             }
         }
-
-        return level[t] != -1;
+        return false;
     }
 
-    T dfs(int v, int t, T flow) {
-        if(v == t) return flow;
-
-        for(int& i = iter[v]; i < (int)g[v].size(); i++) {
-            Edge<T>& e = g[v][i];
-
-            if(e.cap > 0 && level[v] < level[e.to]) {
-                T d = dfs(e.to, t, min(flow, e.cap));
-
-                if(d > 0) {
-                    e.cap -= d;
-                    g[e.to][e.rev].cap += d;
-                    return d;
-                }
+    int bipartite_matching() {
+        int ret = 0;
+        for (int i = 0; i < (int)graph.size(); i++) {
+            if (alive[i] == 0) continue;
+            if (match[i] == -1) {
+                ++timestamp;
+                ret += augment(i);
             }
         }
-
-        return 0;
+        return ret;
     }
 
-    
-    T max_matcing(int s, int t) {
-        T f = zero;
+    int add_vertex(int idx) {
+        alive[idx] = 1;
+        ++timestamp;
+        return augment(idx);
+    }
 
-        while(bfs(s, t)) {
-            iter.assign(n, 0);
-            T d;
-            while((d = dfs(s, t, E)) > zero) f += d;
+    int erase_vertex(int idx) {
+        alive[idx] = 0;
+        if (match[idx] == -1) {
+            return 0;
         }
+        match[match[idx]] = -1;
+        ++timestamp;
+        int ret = augment(match[idx]);
+        match[idx] = -1;
+        return ret - 1;
+    }
 
-        return f;
+    void output() const {
+        for (int i = 0; i < (int)graph.size(); i++) {
+            if (i < match[i]) {
+                cout << i << "-" << match[i] << endl;
+            }
+        }
     }
 };
-
-//O(|V||E|)

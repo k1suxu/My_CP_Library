@@ -1,0 +1,30 @@
+s = "I am Sam"
+
+検索
+"Sam" in s # True
+s.find("Sam") # 5
+s.find("xxx") # -1
+s.rfind("") # 右から見て最初のindex
+
+部分文字列の出現回数
+s = 'aaabbc'
+print(s.count('b'))  #=> 2
+
+
+chr()
+ord()
+
+replace
+s = 'Today is Monday.'
+ss = s.replace('Monday', 'Sunday')  #=> 'Today is Sunday.'
+print(ss)
+s2 = 'Hello Hello'
+ss2 = s2.replace('Hello', 'Bye')  #=> 'Bye Bye' 第三引数を指定しなければすべて置換される
+print(ss2)
+s3 = 'World World'
+ss3 = s3.replace('World', 'Hello', 1)  #=> 'Hello World' # 第三匹数で置換する個数を指定
+print(ss3)
+
+大文字小文字
+print('hello'.upper())  # => 'HELLO'
+print('BIG'.lower())  # => 'big'

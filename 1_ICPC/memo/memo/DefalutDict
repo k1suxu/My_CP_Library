@@ -1,0 +1,7 @@
+from collections import defaultdict
+d = defaultdict(int)
+d = defaultdict(list)
+d = defaultdict(lambda: 1)
+d = defaultdict(lambda: Node(None, -1))みたいな
+
+

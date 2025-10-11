@@ -1,5 +1,5 @@
 // cf: https://snuke.hatenablog.com/entry/2014/12/02/235837
-// 返ってくる値は各iを中心とした回文の最大長さ 半径は(Rad=(len[i]+1)/2)で求められる
+// 返ってくる値は各iを中心とした回文の最大長 半径は(Rad=(len[i]+1)/2)で求められる
 // 原則奇数長しか返せない
 // dummy文字を入れることで偶数長も求められる -> (ABBA -> A$B$B$A)
 // 結局dummmy文字はdummy文字としか比較されないため、str[0]をdumyとして採用してもよい
@@ -45,10 +45,12 @@ vector<int> manacher(T_String str, bool calc_even = false) {
     return len;
 }
 
-/* [回文判定] [閉区間]
-auto is_palindrome = [&](int l, int r) -> bool {
-    if(r-l+1==1) return true;
-    int center = (l + r);
-    return r-l+1 <= mana[center];
-};
+/* [回文判定] [開区間]
+    // calc_even = true;
+    auto is_palindrome = [&](int l, int r) -> bool {
+        assert(l < r);
+        if(r-l == 1) return true;
+        int center = (l + r - 1);
+        return r - l <= mana[center];
+    };
 */

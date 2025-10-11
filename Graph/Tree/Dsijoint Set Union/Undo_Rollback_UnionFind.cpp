@@ -34,21 +34,17 @@ struct Undo_UnionFind {
     bool undo() {
         if(history.size() == 0) return false;
         for(int i = 0; i < 2; ++i) {
-            r[history.back().first] = history.back().second;
+            r[history.top().first] = history.top().second;
             history.pop();
         }
         return true;
     }
 
     void snapshot() {
-        history.clear();
+        while(!history.empty()) history.pop();
     }
 
     void rollback() {
         while(!history.empty()) undo();
     }
 };
-
-//not verifed
-//https://nyaannyaan.github.io/library/data-structure/rollback-union-find.hpp.html
-//みたいにstateを引数にするのもあり。また、hisotryをstackにしたい

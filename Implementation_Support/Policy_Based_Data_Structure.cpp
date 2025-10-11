@@ -15,3 +15,6 @@ using pbds_tree = tree<T, null_type, comp<T>, rb_tree_tag, tree_order_statistics
 // }
 
 // // pbds_tree<int, less> [[VAR_NAMWE]] のように使う
+// order_of_keyは、実質lower_bound-beginの値
+
+// multisetみたいに使いたいときは、それぞれにラベルを張る感じで、{x, i}みたいにすればよい

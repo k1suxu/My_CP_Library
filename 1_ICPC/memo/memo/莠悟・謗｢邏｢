@@ -1,0 +1,36 @@
+import bisect
+
+>>> a=[10,20,30,40,50,60,70,80,90,100]
+>>> 
+>>> bisect.bisect(a,55) (同じ値なら右側に挿入される)
+5
+>>> 
+
+import bisect
+a = [2, 3, 5, 7, 11, 13, 17, 19]
+print(bisect.bisect_left(a, 11))
+>>> 4
+print(bisect.bisect_right(a, 11))
+>>> 5
+print(bisect.bisect(a, 11))
+>>> 5
+# bisect_leftでも自分自身しか参照できない。もしx未満のindex、ならbisect_left(A,x)-1をしてやらなきゃいけない
+def is_ok(arg):
+    # 条件を満たすかどうか？問題ごとに定義
+    pass
+
+
+def meguru_bisect(ng, ok):
+    '''
+    初期値のng,okを受け取り,is_okを満たす最小(最大)のokを返す
+    まずis_okを定義すべし
+    ng ok は  とり得る最小の値-1 とり得る最大の値+1
+    最大最小が逆の場合はよしなにひっくり返す
+    '''
+    while (abs(ok - ng) > 1):
+        mid = (ok + ng) // 2
+        if is_ok(mid):
+            ok = mid
+        else:
+            ng = mid
+    return ok

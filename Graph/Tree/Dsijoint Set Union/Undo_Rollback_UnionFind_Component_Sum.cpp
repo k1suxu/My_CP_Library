@@ -90,7 +90,7 @@ struct S {
 };
 void merge(S &par, S ch) { // toの更新は必要ない
 }
-// S()が単位減に相当
+// S()が単位元に相当
 
 // UF.r[UF.root(x)].c = c;みたいなことをすると、component sumデータの書き換えも可能
 // (今のところこれのrollbackは用意してない)

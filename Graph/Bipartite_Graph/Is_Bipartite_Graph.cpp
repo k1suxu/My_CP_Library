@@ -26,7 +26,7 @@ struct Is_Bipartite {
         return true;
     }
 
-    bool generate() {
+    bool run() {
         color.assign(n, -1);
         bool flag = true;
         for(int i = 0; i < n; i++) {

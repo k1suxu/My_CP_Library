@@ -52,6 +52,7 @@ vector<long long> dijkstra(vector<vector<pair<int, long long>>> &graph, int star
         }
     }
     return dist;
+    // max(dist[i], dist1[i])で各点からの最遠点も求められる
 }
 pair<vector<long long>, vector<int>> dijkstra_restoration(vector<vector<pair<int, long long>>> &graph, int start) {
     int n = (int)graph.size();
@@ -74,6 +75,7 @@ pair<vector<long long>, vector<int>> dijkstra_restoration(vector<vector<pair<int
         }
     }
     return make_pair(dist, pre);
+    // max(dist[i], dist1[i])で各点からの最遠点も求められる
 }
 // 重み付きグラフの直径
 // get pair of verticies the length between which is equal to the diameter of the tree
@@ -94,4 +96,5 @@ pair<long long, vector<int>> diameter_of_tree_get_path(vector<vector<pair<int, l
     }
     path.push_back(v);
     return make_pair(*max_element(dist2.begin(), dist2.end()), path);
+    // max(dist[i], dist1[i])で各点からの最遠点も求められる
 }

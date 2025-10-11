@@ -1,0 +1,37 @@
+bit演算、2進数
+
+bin(n)
+format(n,'b') プレフィックスが消える
+format(n,'08b') 8桁になるように0埋めされる
+s.zfill(num) 文字列sが、num桁になるように0埋めされる　s = s.zfill()と使う
+int('', 2) #2進数変換
+
+& 論理積、（AND） 掛け算(両方１の時、１)
+
+| 論理和、（OR）足し算(どちらかが１なら１)
+
+^ 排他的論理和、（XOR）（異なる値の時、1）
+
+
+modint
+
+逆元 pow(a,mod-2,mod)
+
+combination 
+MAX = 10**6 # n の取りうる最大値( ただし, Pより小さいものとする )を取る
+
+P = mod # P は十分大きく、かつ素数である
+fac = [1] + [1]
+finv = [1] + [1]
+inv = [0] + [1]
+
+for i in range(2, MAX):
+    fac += [fac[-1] * i % P]
+    inv += [P - inv[P%i] * (P // i) %P]
+    finv += [finv[-1] * inv[i] % P]
+
+
+def comb(n, k):
+    if n < 0 or k < 0 or n < k:
+        return 0
+    return fac[n] * finv[k] * finv[n-k] % P

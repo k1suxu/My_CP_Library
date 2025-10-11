@@ -25,7 +25,7 @@ private:
         return d;
     }
 public:
-    const int logn = 20;
+    const int logn = 18;
     vector<int> l, r;
 
     Triangle_Mo(int n) {}
@@ -36,11 +36,10 @@ public:
         r.push_back(right);
     }
 
-    template<typename Answer_Type, void (*add)(int), void (*del)(int), Answer_Type (*get_ans)()>
-    vector<Answer_Type> solve() {
+    template<typename T_add, typename T_del, typename T_get_ans>
+    void solve(const T_add &add, const T_del &del, const T_get_ans &get_ans) {
         const int q = (int)l.size();
         int now_l = 0, now_r = 0;
-        vector<Answer_Type> ans(q);
         vector<int> idx(q), ord(q);
 
         for(int i = 0; i < q; ++i) ord[i] = triangleorder(l[i], r[i]);
@@ -54,34 +53,8 @@ public:
             while(now_r < r[idx[i]]) add(now_r++);
             while(now_l < l[idx[i]]) del(now_l++);
             while(now_r > r[idx[i]]) del(--now_r);
-            ans[idx[i]] = get_ans();
+            get_ans(idx[i]);
         }
-
-        return ans;
-    }
-
-    template<typename Answer_Type, typename T_add, typename T_del, typename T_get_ans>
-    vector<Answer_Type> solve(T_add add, T_del del, T_get_ans get_ans) {
-        const int q = (int)l.size();
-        int now_l = 0, now_r = 0;
-        vector<Answer_Type> ans(q);
-        vector<int> idx(q), ord(q);
-
-        for(int i = 0; i < q; ++i) ord[i] = triangleorder(l[i], r[i]);
-        iota(idx.begin(), idx.end(), 0);
-        sort(idx.begin(), idx.end(), [&](int a, int b) {
-            return ord[a] < ord[b];
-        });
-
-        for(int i = 0; i < q; ++i) {
-            while(now_l > l[idx[i]]) add(--now_l);
-            while(now_r < r[idx[i]]) add(now_r++);
-            while(now_l < l[idx[i]]) del(now_l++);
-            while(now_r > r[idx[i]]) del(--now_r);
-            ans[idx[i]] = get_ans();
-        }
-
-        return ans;
     }
 };
 

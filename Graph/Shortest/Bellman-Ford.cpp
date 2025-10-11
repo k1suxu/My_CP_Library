@@ -24,9 +24,6 @@ struct edge {
     edge(int f, int t, int c) : from(f), to(t), cost(c) {}
 };
 
-// main funciton of bellman_ford
-// return whether the graph has "negative cycle" or not
-// vector dist will be changed as a side effect
 bool bellman_ford(const vector<edge> graph, int number_of_vertex, int start, vector<int> &dist) {
     dist.resize(number_of_vertex, INF);
     dist[start] = 0;
@@ -42,9 +39,9 @@ bool bellman_ford(const vector<edge> graph, int number_of_vertex, int start, vec
         if(end) break;
         cnt++;
     }
-    if(cnt == number_of_vertex) return true;
-    return false;
+    return cnt != number_of_vertex;
 }
+// 負閉路あったらfalse返す
 
 
 //最短経路上に負のサイクルがあるような頂点の集合

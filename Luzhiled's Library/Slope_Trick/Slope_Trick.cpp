@@ -2,11 +2,11 @@
 template< typename T >
 struct SlopeTrick {
     
-    const T INF = numeric_limits< T >::max() / 3;
+    const T INF = numeric_limits<T>::max() / 3;
     
     T min_f;
-    priority_queue< T, vector< T >, less<> > L;
-    priority_queue< T, vector< T >, greater<> > R;
+    priority_queue<T, vector<T>, less<>> L;
+    priority_queue<T, vector<T>, greater<>> R;
     T add_l, add_r;
     
     private:

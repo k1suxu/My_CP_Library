@@ -50,17 +50,17 @@ private:
         t = clone(t);
         if(t->lazy != id()) {
             if(t->is_leaf()) {
-                t->self_val = mapping(t->self_val, t->lazy);
+                t->self_val = mapping(t->lazy, t->self_val);
             } else {
                 if(t->l) {
                     t->l = clone(t->l);
                     t->l->lazy = composition(t->l->lazy, t->lazy);
-                    t->l->sum = mapping(t->l->sum, t->lazy);
+                    t->l->sum = mapping(t->lazy, t->l->sum);
                 }
                 if(t->r) {
                     t->r = clone(t->r);
                     t->r->lazy = composition(t->r->lazy, t->lazy);
-                    t->r->sum = mapping(t->r->sum, t->lazy);
+                    t->r->sum = mapping(t->lazy, t->r->sum);
                 }
             }
             t->lazy = id();
@@ -134,7 +134,7 @@ private:
     void dump(Node *r, typename vector<S>::iterator &it, F lazy) {
         if(r->lazy != id()) lazy = composition(lazy, r->lazy);
         if(r->is_leaf()) {
-            *it++ = mapping(r->self_val, lazy);
+            *it++ = mapping(lazy, r->self_val);
             return;
         }
         dump(r->l, it, lazy);

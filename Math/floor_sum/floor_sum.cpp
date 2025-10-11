@@ -56,4 +56,3 @@ long long floor_sum(long long n, long long m, long long a, long long b) {
     return ans + internal::floor_sum_unsigned(n, m, a, b);
 }
 
-// not verified

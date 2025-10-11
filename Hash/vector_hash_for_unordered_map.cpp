@@ -1,6 +1,5 @@
 template<typename T>
-ull make_hash(vector<T> st) {
-    vi vec;
+ull make_hash(vector<T> vec) {
     std::size_t seed = vec.size();
     for(auto x : vec) {
         x = ((x >> 16) ^ x) * 0x45d9f3b;

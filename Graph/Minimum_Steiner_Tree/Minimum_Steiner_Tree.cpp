@@ -31,7 +31,7 @@ public:
                 }
             }
 
-            // 下の行をコメントアウトしないことによってterminal + 1頂点の木すべての最小シュタイナー木のコストが求められる
+            // 下の行をコメントアウトすることによってterminal + 1頂点の木すべての最小シュタイナー木のコストが求められる
             // if(i == (1<<sz) - 1) break;
             
             priority_queue<pair<T, int>, vector<pair<T, int>>, greater<pair<T, int>>> pq;

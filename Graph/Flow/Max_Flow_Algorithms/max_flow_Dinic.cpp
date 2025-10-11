@@ -88,8 +88,7 @@ struct Dinic {
     }
 
     //sから見たときのmin_cutにおいてs側に所属するかどうかを全頂点に対して返すO(N)
-    pair<T, vector<bool>> min_cut(int s, int t) {
-        T max_flow = flow(s, t);
+    vector<bool> min_cut(int s) {
         vector<bool> visited(n, false);
         queue<int> que;
         visited[s] = true;
@@ -102,11 +101,7 @@ struct Dinic {
                 que.push(e.to);
             }
         }
-        return make_pair(max_flow, visited);
-    }
-
-    Edge<T> get_edge(int edge_id) {
-        return g[Edge_ID[edge_id].first][Edge_ID[edge_id].second];
+        return visited;
     }
 };
 

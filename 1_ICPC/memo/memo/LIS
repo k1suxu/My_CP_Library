@@ -1,0 +1,109 @@
+最長増加部分列問題
+
+配列Aに対して
+B = [inf] * N
+で持っておく、Bは昇順にならんでおり、A[i]の入る位置を二部探索で探す
+
+B = [0] * N 
+で持っておく、B[i] = max(A[k] |k<i,A[k]<=A[i]) + 1で更新
+Aの昇順に値を更新することで、k<iのRangeMaxQueryをセグ木で求める
+dpのイメージ
+
+#リストseqからLISの長さを出す
+#コード
+"""
+import bisect
+
+LIS = [seq[0]]
+for i in range(len(seq)):
+    if seq[i] > LIS[-1]:
+        LIS.append(seq[i])
+    else:
+        LIS[bisect.bisect_left(LIS, seq[i])] = seq[i]
+
+print(len(LIS))
+"""
+
+import sys
+from collections import deque, Counter, defaultdict
+input = lambda: sys.stdin.readline().rstrip()
+ii = lambda: int(input())
+mi = lambda: map(int, input().split())
+li = lambda: list(mi())
+inf = 2 ** 63 - 1
+mod = 998244353
+
+# セグメント木
+class SegTree:
+    def __init__(self, init_list, segfunc, ide_ele):
+        self.n = len(init_list)
+        self.segfunc = segfunc
+        self.ide_ele = ide_ele
+        self.num = 2 ** (self.n - 1).bit_length()
+        self.tree = [ide_ele] * 2 * self.num
+        for k in range(self.n):
+            self.tree[self.num + k] = init_list[k]
+        for k in range(self.num - 1, 0, -1):
+            self.tree[k] = self.segfunc(self.tree[2 * k], self.tree[2 * k + 1])
+    
+    # idxがk(0-indexed)である要素を返す
+    def __getitem__(self, k):
+        return self.tree[self.num + k]
+
+    #【一点加算】idxがk(0-indexed)である要素にxを加える
+    def add(self, k, x):
+        k += self.num
+        self.tree[k] += x
+        while k > 1:
+            self.tree[k // 2] = self.segfunc(self.tree[k], self.tree[k ^ 1])
+            k //= 2
+
+    #【一点更新】idxがk(0-indexed)である要素をxに更新する
+    def update(self, k, x):
+        k += self.num
+        self.tree[k] = x
+        while k > 1:
+            self.tree[k // 2] = self.segfunc(self.tree[k], self.tree[k ^ 1])
+            k //= 2
+
+    #【区間内のクエリを実行する】区間[l, r)でsegfuncしたものを返す
+    def query(self, l, r):
+        res = self.ide_ele
+        l += self.num
+        r += self.num
+        while l < r:
+            if l % 2 == 1:
+                res = self.segfunc(res, self.tree[l])
+                l += 1
+            l //= 2
+
+            if r % 2 == 1:
+                res = self.segfunc(res, self.tree[r - 1])
+            r //= 2
+        return res
+    
+    def lis(self):
+        return self.tree
+
+N = ii()
+A = li()
+S = sorted(list(set(A)))
+ranking = {x:i+1 for i,x in enumerate(S)}
+A_zaatsu = []
+for a in A:
+    A_zaatsu.append(ranking[a])
+#print(A_zaatsu)  ## [1, 5, 3, 4, 4, 2, 5, 5]
+
+def segfunc(x, y):
+    return max(x,y)
+ide_ele = -inf
+
+seg = SegTree([0] * (N+1), segfunc, ide_ele)
+
+
+for i in range(N):
+    now = A_zaatsu[i]
+    M = seg.query(0,now)
+    seg.update(now, M+1)
+
+print(seg.query(0,N+1))

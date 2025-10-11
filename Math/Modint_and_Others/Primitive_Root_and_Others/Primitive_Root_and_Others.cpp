@@ -74,7 +74,7 @@ struct fast_prime_factorizer {
         // sort(left.begin(), left.end());
         return left;
     }
-}(factorizer);
+} factorizer;
 
 template<typename T_VAL, typename T_EXP>
 T_VAL modpow(T_VAL n, T_EXP m, const T_VAL MOD) {
@@ -110,7 +110,7 @@ long long primitive_root_ll(long long p) {
     exit(1);
 }
 
-// mod pでのxの位数を求める　(素数mod限定のはず？？)
+// mod pでのxの位数を求める　(素数mod限定のはず？？) (primes: p-1の素因数)
 long long prime_mod_order(long long x, long long p, vector<long long>& primes) {
     assert(!primes.empty());
 

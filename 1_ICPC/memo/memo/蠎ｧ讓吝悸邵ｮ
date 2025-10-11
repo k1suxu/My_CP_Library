@@ -1,0 +1,12 @@
+A = [4, 90, 25, 30, 30, 8, 90, 90]
+S = sorted(list(set(A))) ## [4, 8, 25, 30, 90]
+ranking = {x:i for i,x in enumerate(S)} ## {4: 0, 8: 1, 25: 2, 30: 3, 90: 4}
+A_zaatsu = []
+for a in A:
+  A_zaatsu.append(ranking[a])
+print(A_zaatsu)  ## [1, 5, 3, 4, 4, 2, 5, 5]
+
+
+#これだけでもOK
+comp = {e:i for i,e in enumerate(sorted(set(A)))}
+A = [comp[a] for a in A]

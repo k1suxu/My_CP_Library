@@ -121,11 +121,11 @@ struct Rolling_Hash {
     }
 
     // is verified ??
-    bool is_palindrome(const vector<unsigned long long> normal, const vector<unsigned long long> rev, int l, int r) {
+    bool is_palindrome(const vector<unsigned long long> &normal, const vector<unsigned long long> &rev, int l, int r) {
         const int hash_len = (int)normal.size();
         assert((int)rev.size() == hash_len);
         // cout << l << " " << r << " " << hash_len-r << " " << hash_len-l << endl;
         // hash_len-r, hash_len-lじゃないとだめじゃない？なぜうまくいくんだ？開区間前提だっけか？？
         return issame(normal, l, r, rev, hash_len-1-r, hash_len-1-l);
     }
-};
+} rh;

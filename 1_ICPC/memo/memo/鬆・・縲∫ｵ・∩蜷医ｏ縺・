@@ -1,0 +1,4 @@
+import itertools
+
+l = [i for i in range(N)]
+p = itertools.permutations(l,2)
