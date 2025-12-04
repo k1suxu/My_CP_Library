@@ -31,7 +31,7 @@ public:
     void pop_front() {
         if(sz == 0) {
             cerr << "Assertion Failed\n";
-            cerr << "`pop_fron` operation was denied because the size of queue is 0\n";
+            cerr << "`pop_front` operation was denied because the size of queue is 0\n";
             return;
         }
         if(sz == 1) return clear();
@@ -44,7 +44,7 @@ public:
     void pop_back() {
         if(sz == 0) {
             cerr << "Assertion Failed\n";
-            cerr << "`pop_fron` operation was denied because the size of queue is 0\n";
+            cerr << "`pop_back` operation was denied because the size of queue is 0\n";
             return;
         }
         if(sz == 1) return clear();
@@ -83,3 +83,4 @@ vector<S> SWAG_Range_Query(vector<S> val, vector<pair<int, int>> segs) {
 
 //opは非可換でOK (Affineなど)
 //全てのクエリについて均し計算量O(1)(shifting_adjustが重そうに見えるが実は合計でO(Q)(Q:クエリ回数)以下しかかからない)
+// 償却O(1)の証明 : k回front, backを移動する要素は高々O(N/2^k)個。kに関して総和を取るとΣk/2^k = 2より、O(N)

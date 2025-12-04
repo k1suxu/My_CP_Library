@@ -1,5 +1,7 @@
 //String
 vector<pair<char, int>> run_length_encoding(string s) {
+    if (s.empty()) return {};
+
     char need = s[0];
     int cnt = 0;
     vector<pair<char, int>> ret;
@@ -19,6 +21,8 @@ vector<pair<char, int>> run_length_encoding(string s) {
 //Others
 template<typename T>
 vector<pair<T, int>> run_length_encoding(vector<T> s) {
+    if (s.empty()) return {};
+
     T need = s[0];
     int cnt = 0;
     vector<pair<T, int>> ret;

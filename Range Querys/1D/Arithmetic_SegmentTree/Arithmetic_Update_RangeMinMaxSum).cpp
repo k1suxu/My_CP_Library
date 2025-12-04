@@ -40,7 +40,7 @@ struct lazy_segtree_arithmetic : lazy_segtype {
         (*this) = lazy_segtree_arithmetic(sv);
     }
     // f = (a, b)
-    // [l, r) ‚ğ b, a+b, 2a+b, ... ‚ÅXV
+    // [l, r) b, a+b, 2a+b, ...
     void apply(int l, int r, F f) {
         lazy_segtype::apply(l, r, {f.a, f.b - f.a * get(l).l});
     }
@@ -48,4 +48,3 @@ struct lazy_segtree_arithmetic : lazy_segtype {
 };
 
 //be careful the data types(int, long long)
-//

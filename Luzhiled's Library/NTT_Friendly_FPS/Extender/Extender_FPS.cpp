@@ -72,3 +72,24 @@ Inner_FPS<Mint> geometric_polynomial(const Inner_FPS<Mint> &x, const long long &
 
     return res.pre(deg);
 }
+
+// Π(1 +- x ^ a_i)
+// many_binomials_production<FPS, mint>
+template<template<typename> class Inner_FPS, typename Mint>
+Inner_FPS<Mint> many_binomials_production(vector<int> a, int deg, bool neg) {
+    vector<int> cnt(deg);
+    for (auto &e : a) if (e < deg) cnt[e]++;
+    Inner_FPS<Mint> f(deg);
+    for (int i = 1; i < deg; i++) {
+        Mint fac = 1;
+        for (int j = i, t = 1; j < deg; j += i, t++) {
+            if (neg) {
+                f[j] -= Mint(cnt[i]) / Mint(t);
+            } else {
+                f[j] += fac * Mint(cnt[i]) / Mint(t);
+            }
+            fac *= -1;
+        }
+    }
+    return f.exp(deg);
+}

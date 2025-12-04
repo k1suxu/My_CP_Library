@@ -55,3 +55,24 @@ FPS<Mint> polynomial_interpolation(const vector<Mint> &xs, const vector<Mint> &y
     for(int i = k; i-- > 1;) g[i] = g[i<<1] * mul[i<<1 | 1] + g[i<<1 | 1] * mul[i<<1];
     return g[1];
 }
+
+// Π(1 +- x ^ a_i)
+// many_binomials_production<FPS, mint>
+template<typename Mint>
+FPS<Mint> many_binomials_production(vector<int> a, int deg, bool neg) {
+    vector<int> cnt(deg);
+    for (auto &e : a) if (e < deg) cnt[e]++;
+    FPS<Mint> f(deg);
+    for (int i = 1; i < deg; i++) {
+        Mint fac = 1;
+        for (int j = i, t = 1; j < deg; j += i, t++) {
+            if (neg) {
+                f[j] -= Mint(cnt[i]) / Mint(t);
+            } else {
+                f[j] += fac * Mint(cnt[i]) / Mint(t);
+            }
+            fac *= -1;
+        }
+    }
+    return f.exp(deg);
+}
