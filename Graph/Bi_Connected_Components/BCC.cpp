@@ -113,7 +113,7 @@ struct BiConnectedComponents : LowLink<T> {
   using LowLink<T>::ord;
   using LowLink<T>::low;
 
-  vector<vector<Edge<T> > > bc; // bc[i]: グループiに属する辺の集合
+  vector<vector<Edge<T> > > bc; // bc[i]: グループiに属する辺の集合 (向き付きで保存される(無効辺について、片方向しかbcには入らない))
 
   void build() override {
     LowLink<T>::build();
