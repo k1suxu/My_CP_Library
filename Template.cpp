@@ -27,6 +27,7 @@ using ld = long double;
 using ull = unsigned long long;
 
 const ll INF = numeric_limits<long long>::max() / 2;
+const int IINF = numeric_limits<int>::max() / 2;
 const ld pi = 3.1415926535897932384626433832795028;
 const ll mod = 998244353;
 int dx[] = {1, 0, -1, 0, -1, -1, 1, 1};
