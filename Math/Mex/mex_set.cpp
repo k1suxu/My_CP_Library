@@ -53,8 +53,3 @@ struct mex_multiset {
         return que.top();
     }
 };
-
-int find_mex(vector<int> x) {
-    mex_multiset mex(x.size());
-    return mex.get_mex();
-}
