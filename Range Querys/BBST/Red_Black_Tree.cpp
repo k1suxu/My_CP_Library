@@ -253,7 +253,7 @@ public:
     // f(op(s[0],...,s[r-1]))=true,f(op(s[0],...,s[r]))=falseとなる最小のr
     // fが単調の時、f(op(s[0],...,s[r-1]))=trueとなる最大のrと考えられる
     // BBST上の二分探索 (前から)
-    // なぜかこっちはTLEしたりするからデバッグしたい」ところではある
+    // なぜかこっちはTLEしたりするからデバッグしたいところではある
     template<typename F>
     int binary_search_right(Node *t, const F &f, S lsum = e()) {
         if(!t) return 0;
@@ -292,6 +292,6 @@ S op(S x, S y) {
 S e() {
     return make_pair(-INF, -INF);
 }
-string S_to_string(S x) {
-    return "{" + to_string(x.first) + ", " + to_string(x.second) + "}";
-}
+// string S_to_string(S x) {
+//     return "{" + to_string(x.first) + ", " + to_string(x.second) + "}";
+// }

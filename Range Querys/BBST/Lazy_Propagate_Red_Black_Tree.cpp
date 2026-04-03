@@ -277,7 +277,7 @@ public:
     // f(op(s[0],...,s[r-1]))=true,f(op(s[0],...,s[r]))=falseとなる最小のr
     // fが単調の時、f(op(s[0],...,s[r-1]))=trueとなる最大のrと考えられる
     // BBST上の二分探索 (前から)
-    // なぜかこっちはTLEしたりするからデバッグしたい」ところではある
+    // なぜかこっちはTLEしたりするからデバッグしたいところ
     template<typename F>
     int binary_search_right(Node *t, const F &f, S lsum = e()) {
         if(!t) return 0;
@@ -308,4 +308,4 @@ public:
 
 //ref: https://ei1333.github.io/library/structure/bbst/lazy-red-black-tree.hpp
 
-// bin searchないでupdateやってないの大丈夫なのかな？？
+// bin search内でupdateやってないの大丈夫なのかな？？
