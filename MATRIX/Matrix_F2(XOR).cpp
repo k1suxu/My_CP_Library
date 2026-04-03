@@ -3,8 +3,8 @@
 //bitset -> O(HW^2/64)
 //F_2Matrix
 
-const int MAX_ROW = 510;
-const int MAX_COL = 510;
+const int MAX_ROW = 16;
+const int MAX_COL = 8 << 16;
 
 struct Bit_Matrix {
     int H, W;
