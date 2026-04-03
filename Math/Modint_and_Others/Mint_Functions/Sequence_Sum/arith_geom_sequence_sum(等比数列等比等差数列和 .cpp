@@ -1,26 +1,38 @@
 template<typename T, typename U = long long>
 T x_geom_seq_sum(T r, U n) { // Σ [0,n) x^i
-    if(n == 0) return 0;
+    if (n == 0) return T(0);
+    if (n == 1) return T(1);
 
-    U m = n/2;
-    T half = x_geom_seq_sum(r, m);
-    T ret = half + r.pow(m) * half;
-    if(n&1) ret = 1 + ret * r;
+    if (n & 1) return T(1) + r * x_geom_seq_sum(r, n - 1);
+    return x_geom_seq_sum(r * r, n / 2) * (T(1) + r);
+}
 
-    return ret;
+// { r^n,  Σ [0,n) r^i,  Σ [0,n) i*r^i } を O(log n) で同時に計算する
+template<typename T, typename U = long long>
+std::tuple<T, T, T> ix_geom_seq_tuple(T r, U n) {
+    if (n == 0) return {T(1), T(0), T(0)};
+    
+    U m = n / 2;
+    auto [p_m, s_m, is_m] = ix_geom_seq_tuple(r, m);
+    
+    T p_2m = p_m * p_m;
+    T s_2m = s_m + p_m * s_m;
+    // Σ[0, 2m) i*r^i = Σ[0, m) i*r^i + r^m * Σ[0, m) (i+m)*r^i
+    T is_2m = is_m + p_m * is_m + T(m) * p_m * s_m;
+    
+    if (n & 1) {
+        T p_n = p_2m * r;
+        T s_n = s_2m + p_2m;
+        T is_n = is_2m + T(n - 1) * p_2m;
+        return {p_n, s_n, is_n};
+    }
+    
+    return {p_2m, s_2m, is_2m};
 }
 
 template<typename T, typename U = long long>
-T ix_geom_seq_sum(T r, U n) { // Σ [1,n) ix^i (= Σ [0,n) ix^i)
-    if(n == 0) return 0;
-    
-    U m = n/2;
-    T half = ix_geom_seq_sum(r, m);
-    T ret = half + r.pow(m) * half;
-    ret += m * r.pow(m) * x_geom_seq_sum(r, m);
-    if(n&1) ret = ret * r + x_geom_seq_sum(r, n) - 1;
-
-    return ret;
+T ix_geom_seq_sum(T r, U n) { // Σ [0,n) ix^i
+    return std::get<2>(ix_geom_seq_tuple(r, n));
 }
 
 // 初項a公比r長さnの等比数列の和を求める。つまり以下式を求める
