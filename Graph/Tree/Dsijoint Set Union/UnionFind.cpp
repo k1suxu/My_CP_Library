@@ -45,32 +45,32 @@ struct UnionFind {
     //     return ret;
     // }
 
-    int number_of_set() {
-        unordered_set<int> st;
-        for(int i = 0; i < (int)r.size(); i++) st.insert(root(i));
-        return st.size();
-    }
+    // int number_of_set() {
+    //     unordered_set<int> st;
+    //     for(int i = 0; i < (int)r.size(); i++) st.insert(root(i));
+    //     return st.size();
+    // }
 
     // only vertices: not including leader pos
-    vector<vector<int>> decompose() {
-        vector<pair<int, int>> p;
-        p.reserve((int)r.size());
-        for(int i = 0; i < (int)r.size(); i++) p.emplace_back(root(i), i);
-        sort(all(p));
-        //first:root, second:vertices
-        vector<vector<int>> ret;
-        int pre = -1;
-        for(pair<int, int> e : p) {
-            if(pre != e.first) {
-                ret.push_back(vector<int>{e.second});
-            }else {
-                ret.back().push_back(e.second);
-            }
-            pre = e.first;
-        }
+    // vector<vector<int>> decompose() {
+    //     vector<pair<int, int>> p;
+    //     p.reserve((int)r.size());
+    //     for(int i = 0; i < (int)r.size(); i++) p.emplace_back(root(i), i);
+    //     sort(all(p));
+    //     //first:root, second:vertices
+    //     vector<vector<int>> ret;
+    //     int pre = -1;
+    //     for(pair<int, int> e : p) {
+    //         if(pre != e.first) {
+    //             ret.push_back(vector<int>{e.second});
+    //         }else {
+    //             ret.back().push_back(e.second);
+    //         }
+    //         pre = e.first;
+    //     }
 
-        return ret;
-    }
+    //     return ret;
+    // }
 
     // leader and groups vertex
     // vector<pair<int, vector<int>>> decompose() {
@@ -92,11 +92,11 @@ struct UnionFind {
     //     return ret;
     // }
 
-    vector<int> roots(vector<int> x) {
-        vector<int> ret((int)x.size());
-        for(int i = 0; i < (int)x.size(); i++) ret[i] = root(i);
-        return ret;
-    }
+    // vector<int> roots(vector<int> x) {
+    //     vector<int> ret((int)x.size());
+    //     for(int i = 0; i < (int)x.size(); i++) ret[i] = root(i);
+    //     return ret;
+    // }
 
     // bool unite(pair<int, int> p) {
     //     return unite(p.first, p.second);

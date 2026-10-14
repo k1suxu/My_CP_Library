@@ -23,20 +23,17 @@ struct Binomial{
 
     T fact(int i){
         if (i < 0) return 0;
-        while ((int)fact_vec.size() <= i) extend();
+        while (int(fact_vec.size()) <= i) extend();
         return fact_vec[i];
     }
     T invfact(int i){
         if (i < 0) return 0;
-        while ((int)fact_inv_vec.size() <= i) extend();
+        while (int(fact_inv_vec.size()) <= i) extend();
         return fact_inv_vec[i];
     }
     T C(int a, int b){
         if (a < b || b < 0) return 0;
         return fact(a) * invfact(b) * invfact(a - b);
-    }
-    T H(int a, int b) {
-        return C(a + b - 1, b);
     }
     T invC(int a, int b){
         if (a < b || b < 0) return 0;
@@ -106,5 +103,3 @@ struct Binomial{
         return C(n - 3, k) * C(n + k - 1, k) * inv(k + 1);
     }
 };
-
-Binomial<mint> bin(200100);

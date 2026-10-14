@@ -33,7 +33,7 @@ public:
         recal_size();
     }
 
-    T get_median(bool bigger = false) {
+    T get_median(bool bigger) {
         if(left.size() > right.size()) return *prev(left.end());
         else if(!bigger) return *prev(left.end());
         return *right.begin();

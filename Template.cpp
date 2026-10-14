@@ -5,13 +5,10 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-using std::cin;
-using std::cout;
-
-#define rep(i,n) for(int i = 0; i < (int)(n); i++)
-#define FOR(n) for(int i = 0; i < (int)(n); i++)
-#define repi(i,a,b) for(int i = (int)(a); i < (int)(b); i++)
-#define all(x) (x).begin(), (x).end()
+#define rep(i,n) for(int i = 0; i < (int)n; i++)
+#define FOR(n) for(int i = 0; i < (int)n; i++)
+#define repi(i,a,b) for(int i = (int)a; i < (int)b; i++)
+#define all(x) x.begin(),x.end()
 //#define mp make_pair
 #define vi vector<int>
 #define vvi vector<vi>
@@ -30,6 +27,7 @@ using ld = long double;
 using ull = unsigned long long;
 
 const ll INF = numeric_limits<long long>::max() / 2;
+const int IINF = numeric_limits<int>::max() / 2;
 const ld pi = 3.1415926535897932384626433832795028;
 const ll mod = 998244353;
 int dx[] = {1, 0, -1, 0, -1, -1, 1, 1};
@@ -41,17 +39,12 @@ void solve() {
     
 }
 
-// #define MULTI
-
 signed main() {
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-#ifdef MULTI
+    // int t = 1;
     int t;
     cin >> t;
-    while (t--) solve();
-#else
-    solve();
-#endif
+    while(t--) solve();
     return 0;
 }

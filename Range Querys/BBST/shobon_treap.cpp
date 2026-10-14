@@ -135,6 +135,3 @@ struct treap {
 
 // ref: https://atcoder.jp/contests/abc403/submissions/65272665
 // 上のモノイドと、node(ll v, int p)のところを修正すればよい
-
-// treap T;
-// treap::node* root = nullptr;

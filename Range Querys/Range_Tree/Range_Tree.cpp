@@ -192,7 +192,7 @@ public:
         for (i += n; i; i >>= 1) _add(i, {x, y}, val);
     }
     // l, d, r, u [xl, xr) * [yl, yr)
-    S prod(Coordinate xl, Coordinate xr, Coordinate yl, Coordinate yr) const {
+    S prod(Coordinate xl, Coordinate yl, Coordinate xr, Coordinate yr) const {
         auto comp = [](const Pt &l, const Pt &r) { return l.first < r.first; };
         int l = n + std::distance(_pts.begin(),
                                   std::lower_bound(_pts.begin(), _pts.end(), Pt{xl, yr}, comp));
