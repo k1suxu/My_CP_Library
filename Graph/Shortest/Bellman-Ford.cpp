@@ -55,7 +55,7 @@ struct edge {
 vector<bool> contained_negative_cycle(const vector<edge> g, int n, int st, vector<int> &dist) {
     dist.resize(n, INF);
     dist[st] = 0;
-    int cnt = 0;
+    int cnt = 0;w
 
     vector<bool> negative(n, false);
 

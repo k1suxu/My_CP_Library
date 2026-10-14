@@ -122,6 +122,7 @@ class ImplicitTreap {
     }
 
     void apply(Tree t, int l, int r, F x) {
+        if (l >= r) return;
         Tree t1, t2, t3;
         split(t, l, t1, t2);
         split(t2, r - l, t2 , t3);
@@ -132,6 +133,7 @@ class ImplicitTreap {
     }
 
     S prod(Tree t, int l, int r) {
+        if (l >= r) return e();
         Tree t1, t2, t3;
         split(t, l, t1, t2);
         split(t2, r - l, t2, t3);
